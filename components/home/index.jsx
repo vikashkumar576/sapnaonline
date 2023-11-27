@@ -1,12 +1,12 @@
 import Layout from "../shared/layout";
-import Hero from "./hero";
-
-const Home = ()=>{
-  return (
-     <Layout title="Homepage">
-        <Hero />
-     </Layout>
-  )
-}
-
-export default Home
+ import React from 'react'
+ 
+ function Home() {
+   return (
+        <Layout title="Buy Books Online,Bookstore In Convinient price">
+            
+        </Layout>
+   )
+ }
+ 
+ export default Home

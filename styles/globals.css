@@ -23,3 +23,12 @@
     background-color: transparent;
   }
   
+  #custom-pass::placeholder, #custom-mob::placeholder{
+    color: rgb(123, 119, 119) !important;
+    text-transform: capitalize !important;
+    font-weight: 600;
+
+  }
+  #custom-pass:focus::placeholder, #custom-mob:focus::placeholder{
+    color: rgb(99, 98, 98) !important;
+  }
