@@ -2,17 +2,14 @@ import React, {useState} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Avatar, Badge, Button, Form, Input, InputNumber, Menu, Modal, Select, Tabs } from 'antd'
+import { Badge, Form, Input, InputNumber, Menu, Modal, Select, Tabs } from 'antd'
 import { InfoCircleOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
-import { DownOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
-
-const { Option } = Select;
 
 const menus = [
   {
     title: 'about us',
-    href: '/'
+    href: '/about-us'
   },
   {
     title: 'Contact Us',
@@ -312,7 +309,6 @@ const Layout = ({children, title='Empty Title'}) => {
       key: '8',
     },
   ];
-
   
   return (
     <>
