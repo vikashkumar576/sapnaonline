@@ -433,7 +433,7 @@ const Layout = ({children, title='', description='', keywords=''}) => {
           </ul>
         </div>
       </nav>
-      <section className="min-h-screen bg-[#f1f3f6]">
+      <section className="min-h-screen bg-[#f1f3f6] py-2">
         {children}
       </section>
       <footer className='border-t-2 shadow-lg pt-4'>
@@ -469,8 +469,6 @@ const Layout = ({children, title='', description='', keywords=''}) => {
                 <a className='hover:text-[#2e3292]'>9:30 AM to 6:30 PM (Mon-Sat)</a>
               </Link>
             </div>
-            
-            
           </div>
 
           <div className="col-span-1 flex flex-col gap-2.5 text-gray-500">
@@ -499,8 +497,6 @@ const Layout = ({children, title='', description='', keywords=''}) => {
                 <a className='hover:text-[#2e3292]'>Retail Stores</a>
               </Link>
             </div>
-            
-            
           </div>
 
           <div className="col-span-1 flex flex-col gap-2.5 text-gray-500">
