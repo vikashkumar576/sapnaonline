@@ -2,13 +2,13 @@ import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { BackTop } from 'antd';
 
 const PageNotFound = () => {
     const router = useRouter(null)
     const backToHome = ()=>{
         router.push("/")
     }
+    
   return (
     <>
         <Head>  

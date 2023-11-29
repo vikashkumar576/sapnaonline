@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Badge, Form, Input, InputNumber, Menu, Modal, Tabs } from 'antd'
 import { InfoCircleOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
+import { useRouter } from 'next/router'
 
 const menus = [
   {
@@ -199,6 +200,10 @@ const navmenus = [
 const Layout = ({children, title='', description='', keywords=''}) => {
   const [selectedValue, setSelectedValue] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter(null)
+  const backToHome = ()=>{
+    router.push("/")
+  }
   const [activeTab , setActiveTab] = useState({
     key: '1',
     modalImg: 'signupNew'
@@ -216,6 +221,12 @@ const Layout = ({children, title='', description='', keywords=''}) => {
       ...activeTab,
       key,
       modalImg
+    });
+  }
+  const onTabChangebytab = (key) => {
+    setActiveTab({
+      ...activeTab,
+      key,
     });
   }
 
@@ -365,7 +376,9 @@ const Layout = ({children, title='', description='', keywords=''}) => {
       <nav className='middle-nav border-b pb-2 pt-2 sticky top-0 z-50 bg-white shadow-sm'>
         <div className="container w-[88%] mx-auto py-2 flex justify-between">
           <div className="flex gap-32">
-            <Image src={'/sapnaHome/logo-black.png'} width={130} height={90}></Image>
+            <button onClick={backToHome}>
+              <Image src={'/sapnaHome/logo-black.png'} width={130} height={90}></Image>
+            </button>
             <div className="relative flex items-center">
                 <input type="search" className='border border-blue-700 w-[600px] py-2 rounded-l bg-gray-100 focus:placeholder:text-black outline-none px-3 text-sm' placeholder='Search books by title, author, ISBN' />
                 <select
@@ -543,7 +556,7 @@ const Layout = ({children, title='', description='', keywords=''}) => {
             </div>
 
             <div className="relative ml-auto w-3/5 h-[494px]">
-                <Tabs type='card' activeKey={activeTab.key} onTabClick={onTabChange}>
+                <Tabs type='card' activeKey={activeTab.key} onTabClick={onTabChangebytab}>
                   <Tabs.TabPane 
                     key={1} 
                     tab={
