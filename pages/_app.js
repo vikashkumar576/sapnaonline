@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import 'boxicons/css/boxicons.min.css'
+import 'swiper/css'
 
 function MyApp({ Component, pageProps }) {
   return (

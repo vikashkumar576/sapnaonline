@@ -12,7 +12,7 @@ const { Option } = Select;
 const menus = [
   {
     title: 'about us',
-    href: '/'
+    href: '/about-us'
   },
   {
     title: 'Contact Us',
@@ -199,7 +199,7 @@ const navmenus = [
   },
 ];
 
-const Layout = ({children, title='Empty Title'}) => {
+const Layout = ({children, title='', description='', keywords=''}) => {
   const [selectedValue, setSelectedValue] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab , setActiveTab] = useState({
@@ -317,9 +317,17 @@ const Layout = ({children, title='Empty Title'}) => {
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>{title} - {process.env.NEXT_PUBLIC_DOMAIN}</title>
         <link rel="icon" href="/sapnaHome/sapna-logo.png" />
+        <meta name="description" content={description}/>
+        <meta name="keywords" content={keywords}/>
+        <meta name="robots" content="index,follow"/>
+        <meta property="og:title" content={process.env.NEXT_PUBLIC_BRAND_NAME}/>
+        <meta property="og:description" content={description}/>
+        <meta property="og:image" content={process.env.NEXT_PUBLIC_BRAND_LOGO}/>
+        <meta property="og:url" content="website"/>
       </Head>
+
       <nav className='bg-[#2e3292] text-white top-nav'>
         <div className='container w-[88%] mx-auto py-1 flex items-center justify-between pr-9'>
           <Link href={'/'} legacyBehavior>
@@ -358,7 +366,7 @@ const Layout = ({children, title='Empty Title'}) => {
         </div>
        
       </nav>
-      <nav className='middle-nav border-b pb-2 pt-2 sticky top-0 z-50 bg-white shadow-sm'>
+      <nav className='middle-nav border-b  pb-2 pt-2 sticky top-0 z-50 bg-white shadow-sm'>
         <div className="container w-[88%] mx-auto py-2 flex justify-between">
           <div className="flex gap-32">
             <Image src={'/sapnaHome/logo-black.png'} width={130} height={90}></Image>
@@ -395,7 +403,7 @@ const Layout = ({children, title='Empty Title'}) => {
           </div>
         </div>
       </nav>
-      <nav className='bottom-nav shadow-md pl-2'>
+      <nav className='bottom-nav border-b-[3px] shadow-lg pl-2 border-gray-300'>
         <div className="className='container w-[88%] mx-auto">
           <ul className='inline-flex gap-6 uppercase items-center font-semibold text-sm '>
             <Dropdown
@@ -416,7 +424,7 @@ const Layout = ({children, title='Empty Title'}) => {
           </ul>
         </div>
       </nav>
-      <section className="min-h-screen bg-[#f1f3f6]">
+      <section className="min-h-screen bg-[#f1f3f6] py-4">
         {children}
       </section>
       <footer className='border-t-2 shadow-lg pt-4'>
@@ -492,7 +500,7 @@ const Layout = ({children, title='Empty Title'}) => {
           </div>
         </div>
       </footer>
-      <footer className='bg-[#2e3292] p-3'>
+      <footer className='bg-[#2e3292] p-3 '>
         <div className="container w-[90%] mx-auto flex justify-between font-semibold">
           <div>
             <p className='text-white  text-xs'>© 2001-2022 Sapna Infoway Private Limited. All rights reserved.</p>
