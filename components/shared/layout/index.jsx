@@ -2,12 +2,9 @@ import React, {useState} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Avatar, Badge, Button, Form, Input, InputNumber, Menu, Modal, Select, Tabs } from 'antd'
+import { Badge, Form, Input, InputNumber, Menu, Modal, Tabs } from 'antd'
 import { InfoCircleOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
-import { DownOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
-
-const { Option } = Select;
 
 const menus = [
   {
@@ -312,13 +309,12 @@ const Layout = ({children, title='', description='', keywords=''}) => {
       key: '8',
     },
   ];
-
   
   return (
     <>
       <Head>
-        <title>{title} - {process.env.NEXT_PUBLIC_DOMAIN}</title>
         <link rel="icon" href="/sapnaHome/sapna-logo.png" />
+        <title>{title} - {process.env.NEXT_PUBLIC_DOMAIN}</title>
         <meta name="description" content={description}/>
         <meta name="keywords" content={keywords}/>
         <meta name="robots" content="index,follow"/>
