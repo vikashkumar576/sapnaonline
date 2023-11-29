@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Badge, Form, Input, InputNumber, Menu, Modal, Select, Tabs } from 'antd'
+import { Badge, Form, Input, InputNumber, Menu, Modal, Tabs } from 'antd'
 import { InfoCircleOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
 
@@ -196,7 +196,7 @@ const navmenus = [
   },
 ];
 
-const Layout = ({children, title='Empty Title'}) => {
+const Layout = ({children, title='', description='', keywords=''}) => {
   const [selectedValue, setSelectedValue] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab , setActiveTab] = useState({
@@ -313,9 +313,17 @@ const Layout = ({children, title='Empty Title'}) => {
   return (
     <>
       <Head>
-        <title>{title}</title>
         <link rel="icon" href="/sapnaHome/sapna-logo.png" />
+        <title>{title} - {process.env.NEXT_PUBLIC_DOMAIN}</title>
+        <meta name="description" content={description}/>
+        <meta name="keywords" content={keywords}/>
+        <meta name="robots" content="index,follow"/>
+        <meta property="og:title" content={process.env.NEXT_PUBLIC_BRAND_NAME}/>
+        <meta property="og:description" content={description}/>
+        <meta property="og:image" content={process.env.NEXT_PUBLIC_BRAND_LOGO}/>
+        <meta property="og:url" content="website"/>
       </Head>
+
       <nav className='bg-[#2e3292] text-white top-nav'>
         <div className='container w-[88%] mx-auto py-1 flex items-center justify-between pr-9'>
           <Link href={'/'} legacyBehavior>
