@@ -14,15 +14,15 @@ const menus = [
   },
   {
     title: 'Contact Us',
-    href: '/'
+    href: '/contact'
   },
   {
     title: 'Policies & Terms',
-    href: '/'
+    href: '/terms-conditions'
   },
   {
     title: 'FAQs',
-    href: '/'
+    href: '/faqs'
   },
 ]
 
@@ -726,7 +726,6 @@ const Layout = ({children, title='', description='', keywords=''}) => {
         </div>
         <i className='bx bx-x-circle text-xl absolute top-3 right-2.5 text-gray-400' onClick={handleCancel}></i>
       </Modal>
-
     </>
   )
 }
