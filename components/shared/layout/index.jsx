@@ -14,15 +14,15 @@ const menus = [
   },
   {
     title: 'Contact Us',
-    href: '/'
+    href: '/contact'
   },
   {
     title: 'Policies & Terms',
-    href: '/'
+    href: '/terms-conditions'
   },
   {
     title: 'FAQs',
-    href: '/'
+    href: '/faqs'
   },
 ]
 
