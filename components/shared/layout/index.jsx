@@ -433,7 +433,7 @@ const Layout = ({children, title='', description='', keywords=''}) => {
           </ul>
         </div>
       </nav>
-      <section className="min-h-screen bg-[#f1f3f6]">
+      <section className="min-h-screen bg-[#f1f3f6] py-2">
         {children}
       </section>
       <footer className='border-t-2 shadow-lg pt-4'>
@@ -726,7 +726,6 @@ const Layout = ({children, title='', description='', keywords=''}) => {
         </div>
         <i className='bx bx-x-circle text-xl absolute top-3 right-2.5 text-gray-400' onClick={handleCancel}></i>
       </Modal>
-
     </>
   )
 }
