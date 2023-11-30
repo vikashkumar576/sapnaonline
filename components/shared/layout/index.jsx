@@ -469,8 +469,6 @@ const Layout = ({children, title='', description='', keywords=''}) => {
                 <a className='hover:text-[#2e3292]'>9:30 AM to 6:30 PM (Mon-Sat)</a>
               </Link>
             </div>
-            
-            
           </div>
 
           <div className="col-span-1 flex flex-col gap-2.5 text-gray-500">
@@ -499,8 +497,6 @@ const Layout = ({children, title='', description='', keywords=''}) => {
                 <a className='hover:text-[#2e3292]'>Retail Stores</a>
               </Link>
             </div>
-            
-            
           </div>
 
           <div className="col-span-1 flex flex-col gap-2.5 text-gray-500">
