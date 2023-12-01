@@ -432,7 +432,7 @@ const Layout = ({children, title='', description='', keywords=''}) => {
           </ul>
         </div>
       </nav>
-      <section className="min-h-screen bg-[#f1f3f6]">
+      <section className="min-h-screen bg-[#f1f3f6] py-4">
         {children}
       </section>
       <footer className='border-t-2 shadow-lg pt-4'>
