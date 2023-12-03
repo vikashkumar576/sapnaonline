@@ -32,3 +32,26 @@
   #custom-pass:focus::placeholder, #custom-mob:focus::placeholder{
     color: rgb(99, 98, 98) !important;
   }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 35px !important;
+    height: 65px !important;
+    background-color: #fff !important;
+    color: #000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: 0px 0px 1px rgb(152, 150, 150);
+    border-radius: 3px;
+  }
+  .swiper-button-next::after,.swiper-button-prev::after{
+    font-size: 22px !important;
+    font-weight: bold;
+  }
+
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover{
+    background-color: rgb(239, 243, 243) !important; 
+  }
