@@ -325,7 +325,7 @@ const Layout = ({children, title='', description='', keywords=''}) => {
     <>
       <Head>
         <link rel="icon" href="/sapnaHome/sapna-logo.png" />
-        <title>{title} - {process.env.NEXT_PUBLIC_DOMAIN}</title>
+        <title>{title+'-' +process.env.NEXT_PUBLIC_DOMAIN } </title>
         <meta name="description" content={description}/>
         <meta name="keywords" content={keywords}/>
         <meta name="robots" content="index,follow"/>
