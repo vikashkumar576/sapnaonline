@@ -38,8 +38,14 @@ const Checkout = ()=>{
             </nav>
             <section className="min-h-screen  bg-gray-100 py-2 relative">
                 <div className="container w-[88%] mx-auto grid grid-cols-7 gap-2 ">
-                    <div className="col-span-5 p-5 bg-white sticky top-0 z-50"></div>
-                    <div className="col-span-2 p-5  bg-white"></div>
+                    <div className="col-span-5 p-5 bg-white">
+                        sjadbasjbkjadkcbsjcb
+                    </div>
+                    <div className="col-span-2 p-5  bg-white">
+                        <div className="sticky top-1">
+                            jasbdkfjsb
+                        </div>
+                    </div>
                 </div>
             </section>
             <footer className="bg-white py-4 container w-[88%] mx-auto flex justify-between">
