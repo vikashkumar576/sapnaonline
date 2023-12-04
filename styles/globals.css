@@ -55,3 +55,12 @@
   .swiper-button-next:hover{
     background-color: rgb(239, 243, 243) !important; 
   }
+  .ant-tabs-ink-bar{
+    border: 2px solid #2e3292;
+  }
+  .ant-tabs-tab-active{
+    color: red;
+  }
+  #rc-tabs-1-tab-1{
+    color: red;
+  }

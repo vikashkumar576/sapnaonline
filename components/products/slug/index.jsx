@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import 'swiper/css';
 import 'swiper/css/pagination'
 import 'swiper/css/navigation';
@@ -68,6 +69,135 @@ const bookSpex = [
         value: 'Harper Collins : Uk'
     },
 ]
+
+const fictionBanners =[
+    {
+        path: '/sapnaHome/seller-1.jpg',
+        label : 'Maarikaadu',
+        author: 'by Chandrashekhara Kambara '
+    },
+    {
+        path: '/sapnaHome/seller-2.jpg',
+        label : 'Jugari Cross',
+        author: 'by Kp Poornachandra Thejasvi'
+    },
+    {
+        path: '/sapnaHome/seller-3.jpg',
+        label : 'Malenadina Chitragalu',
+        author: 'by Kuvempu'
+    },
+    {
+        path: '/sapnaHome/seller-4.jpg',
+        label : 'Sanyasiya Baduku',
+        author: 'by K Shivarama Karanth'
+    },
+    {
+        path: '/sapnaHome/seller-5.jpg',
+        label : 'Yerilitada Dariyalli',
+        author: 'by Sudha Murty'
+    },
+    {
+        path: '/sapnaHome/seller-6.jpg',
+        label : 'Nanna Devaru Mattu Itara Kathegalu',
+        author: 'by Kuvempu'
+    },
+    {
+        path: '/sapnaHome/seller-7.jpg',
+        label : 'Karvalho',
+        author: 'by Kp Poornachandra Thejasvi'
+    },
+    {
+        path: '/sapnaHome/seller-8.jpg',
+        label : 'Naayi Neralu',
+        author: 'by Sl Bhyrappa'
+    },
+    {
+        path: '/sapnaHome/seller-9.jpg',
+        label : 'Kannada Rathnakosha',
+        author: 'by NA'
+    },
+    {
+        path: '/sapnaHome/seller-10.jpg',
+        label : 'Amma Helida Entu Sullugalu',
+        author: 'by Ar Manikanth'
+    },
+
+]
+
+
+const allProducts = [
+    {
+        path: '/sapnaHome/newRelease1.jpg',
+        label: 'Murder On The Orient Express',
+        author: 'by Agatha Christie, Harper Collins : Uk',
+        price: '238',
+        discount: '17',
+    },
+    {
+        path: '/sapnaHome/newRelease2.jpg',
+        label: 'Murder On The Orient Express.',
+        author: 'by Agatha Christie, Harper Collins : Uk',
+        price: '238',
+        discount: '17',
+    },
+    {
+        path: '/sapnaHome/newRelease3.jpg',
+        label: 'Murder On The Orient Express.',
+        author: 'by Agatha Christie, Harper Collins : Uk',
+        price: '238',
+        discount: '7',
+    },
+    {
+        path: '/sapnaHome/newRelease4.jpg',
+        label: 'Murder On The Orient Express.',
+        author: 'by Agatha Christie, Harper Collins : Uk',
+        price: '238',
+        discount: '17',
+    },
+    {
+        path: '/sapnaHome/newRelease5.jpg',
+        label: 'Murder On The Orient Express.',
+        author: 'by Agatha Christie, Harper Collins : Uk',
+        price: '238',
+        discount: '17',
+    },
+    {
+        path: '/sapnaHome/newRelease6.jpg',
+        label: 'Murder On The Orient Express.',
+        author: 'by Agatha Christie, Harper Collins : Uk',
+        price: '238',
+        discount: '17',
+    },
+    {
+        path: '/sapnaHome/newRelease7.jpg',
+        label: 'Murder On The Orient Express.',
+        author: 'by Agatha Christie, Harper Collins : Uk',
+        price: '238',
+        discount: '17',
+    },
+    {
+        path: '/sapnaHome/newRelease8.jpg',
+        label: 'Murder On The Orient Express.',
+        author: 'by Agatha Christie, Harper Collins : Uk',
+        price: '238',
+        discount: '17',
+    },
+    {
+        path: '/sapnaHome/newRelease9.jpg',
+        label: 'Murder On The Orient Express.',
+        author: 'by Agatha Christie, Harper Collins : Uk',
+        price: '238',
+        discount: '17',
+    },
+    {
+        path: '/sapnaHome/newRelease1.jpg',
+        label: 'Murder On The Orient Express.',
+        author: 'by Agatha Christie, Harper Collins : Uk',
+        price: '238',
+        discount: '17',
+    },
+]
+
 
 const Slug = ()=>{
     const router = useRouter();
@@ -359,28 +489,130 @@ const Slug = ()=>{
                         }
                     </div>
                 </div>  
-                <Tabs>
+                <Tabs className="bg-white my-2">
                     <Tabs.TabPane
                         key={1}
                         tab={
-                            <h1 className='capitalize text-[#2e3292] font-semibold'>new user</h1>
+                            <h1 className='px-5 capitalize text-[#2e3292] font-semibold'>similar books</h1>
                         }
                     >
-                        <div className="">
-                            tab 1
+                        <div className="relative bg-gray-100">
+                            <Swiper 
+                                watchSlidesProgress={true}
+                                slidesPerView={5} 
+                                spaceBetween={20} 
+                                className="mySwiper flex justify-center items-center"
+                                cssMode={true}
+                                navigation={{
+                                    prevEl: '.swiper-button-prev',
+                                    nextEl: '.swiper-button-next',
+                                }}
+                                pagination={false}
+                                mousewheel={true}
+                                keyboard={true}
+                                modules={[Navigation, Pagination, Mousewheel, Keyboard, Autoplay]}
+                                loop={true}
+                            >
+                                {
+                                    allProducts.map((product, productIndex)=>(
+                                        <SwiperSlide key={productIndex} className="py-3 cursor-pointer">
+                                            <div className="card flex flex-col gap-4 justify-center items-start p-5 col-span-1 bg-white relative">
+                                                <button className="mx-auto w-[120px] h-[195px] relative" onClick={()=>onProductClick(product.label)}>
+                                                    <Image alt="book-image" src={product.path} layout="fill" />
+                                                </button>
+                                                <div className="flex gap-1 flex-col">
+                                                    <Link  href={`/shop/products/${product.label.toLowerCase().split(" ").join("-")}`} legacyBehavior >
+                                                        <a className="font-semibold text-sm">{product.label}</a>
+                                                    </Link>
+                                                    <p className="text-xs text-gray-400">{product.author}</p>
+                                                    <div className="flex gap-3 items-center">
+                                                        <Rate disabled defaultValue={4} character={(<i className='bx bxs-star'></i>)} style={{fontSize: '20px', letterSpacing: '-7px'}} />
+                                                        <p className="text-[10px] text-gray-400">(234)</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-2 items-center">
+                                                    <p className="text-xl font-semibold text-[#2e3292]">&#8377;{ Math.floor(product.price - ((product.price * product.discount) / 100))}</p>
+                                                    <p className="line-through text-gray-400">&#8377;{product.price}</p>
+                                                    <p className="text-green-600">&#40;{product.discount}% off&#41;</p>
+                                                </div>
+                                                <button className="flex text-white w-full mt-3">
+                                                    <i className='bx bx-archive py-1.5 px-3 text-xl bg-[#ec991e] rounded-l '></i>
+                                                    <p className="py-1.5 px-4 bg-[#f7a937] rounded-r uppercase text-sm w-full font-semibold">add to cart</p>
+                                                </button>
+                                                <button className=" absolute top-3 right-3">
+                                                    <i className='bx bx-bookmark border p-1 rounded-full bg-gray-50 text-lg'></i>
+                                                </button>
+                                                <Image alt="offer-banner" src='/sapnaHome/bestseller.svg' width={80} height={10} className="absolute top-4 left-0"/>
+                                            </div>
+                                        </SwiperSlide>
+                                    ))
+                                }
+                            </Swiper>
+                            <div className="swiper-button-prev"></div>
+                            <div className="swiper-button-next"></div>
                         </div>
-
                     </Tabs.TabPane>
                     <Tabs.TabPane
                         key={2}
                         tab={
-                            <h1 className='capitalize text-[#2e3292] font-semibold'>new user</h1>
+                            <h1 className='capitalize text-[#2e3292] font-semibold'>From the author</h1>
                         }
                     >
-                        <div className="">
-                            tab 2
+                        <div className="relative bg-gray-100">
+                            <Swiper 
+                                watchSlidesProgress={true}
+                                slidesPerView={5} 
+                                spaceBetween={20} 
+                                className="mySwiper flex justify-center items-center"
+                                cssMode={true}
+                                navigation={{
+                                    prevEl: '.swiper-button-prev',
+                                    nextEl: '.swiper-button-next',
+                                }}
+                                pagination={false}
+                                mousewheel={true}
+                                keyboard={true}
+                                modules={[Navigation, Pagination, Mousewheel, Keyboard, Autoplay]}
+                                loop={true}
+                            >
+                                {
+                                    allProducts.map((product, productIndex)=>(
+                                        <SwiperSlide key={productIndex} className="py-3 cursor-pointer">
+                                            <div className="card flex flex-col gap-4 justify-center items-start p-5 col-span-1 bg-white relative">
+                                                <button className="mx-auto w-[120px] h-[195px] relative" onClick={()=>onProductClick(product.label)}>
+                                                    <Image alt="book-image" src={product.path} layout="fill" />
+                                                </button>
+                                                <div className="flex gap-1 flex-col">
+                                                    <Link  href={`/shop/products/${product.label.toLowerCase().split(" ").join("-")}`} legacyBehavior >
+                                                        <a className="font-semibold text-sm">{product.label}</a>
+                                                    </Link>
+                                                    <p className="text-xs text-gray-400">{product.author}</p>
+                                                    <div className="flex gap-3 items-center">
+                                                        <Rate disabled defaultValue={4} character={(<i className='bx bxs-star'></i>)} style={{fontSize: '20px', letterSpacing: '-7px'}} />
+                                                        <p className="text-[10px] text-gray-400">(234)</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-2 items-center">
+                                                    <p className="text-xl font-semibold text-[#2e3292]">&#8377;{ Math.floor(product.price - ((product.price * product.discount) / 100))}</p>
+                                                    <p className="line-through text-gray-400">&#8377;{product.price}</p>
+                                                    <p className="text-green-600">&#40;{product.discount}% off&#41;</p>
+                                                </div>
+                                                <button className="flex text-white w-full mt-3">
+                                                    <i className='bx bx-archive py-1.5 px-3 text-xl bg-[#ec991e] rounded-l '></i>
+                                                    <p className="py-1.5 px-4 bg-[#f7a937] rounded-r uppercase text-sm w-full font-semibold">add to cart</p>
+                                                </button>
+                                                <button className=" absolute top-3 right-3">
+                                                    <i className='bx bx-bookmark border p-1 rounded-full bg-gray-50 text-lg'></i>
+                                                </button>
+                                                {/* <Image alt="offer-banner" src='/sapnaHome/bestseller.svg' width={80} height={10} className="absolute top-4 left-0"/> */}
+                                            </div>
+                                        </SwiperSlide>
+                                    ))
+                                }
+                            </Swiper>
+                            <div className="swiper-button-prev"></div>
+                            <div className="swiper-button-next"></div>
                         </div>
-
                     </Tabs.TabPane>
                 </Tabs>
             </div>       
