@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import Image from "next/image"
 import Link from "next/link"
-import { Button, Collapse, Form, Input, Radio, Select } from "antd"
+import { Button, Collapse, Form, Input, Radio, Select, Tabs, Tooltip } from "antd"
 import { useState } from "react"
 import Head from "next/head"
 
@@ -127,7 +127,6 @@ const Checkout = ()=>{
                                 </div>
                                 )} 
                                 key="1" showArrow={false} 
-                                 
                                 style={{background: '#fff'}}
                             >
                                 
@@ -140,7 +139,7 @@ const Checkout = ()=>{
                                 </div>
                                 {/* address */}
                                 {formData &&
-                                <div className={`bg-slate-50 p-4 border border-[#2e3292] rounded mt-4 flex items-center justify-between`}>
+                                <div className={`bg-slate-50 ${formData ? 'inline-block' : 'hidden'} p-4 border border-[#2e3292] rounded mt-4 flex items-center justify-between`}>
                                     <div className="">
                                         <h1 className="font-bold text-[18px]">{formData.fullname}</h1>
                                         <div className="flex gap-2 items-center">
@@ -349,17 +348,247 @@ const Checkout = ()=>{
                                                 <p className="text-sm text-gray-400 font-semibold">Confirm your items and delivery</p>
                                             </div>
                                         </div>
-                                        <button className="uppercase text-[13.5px] font-semibold px-8 border text-blue-600 bg-[#e9e9e9] py-1 rounded" onClick={()=>setActiveKey(2)}>view</button>
+                                        <button className={`uppercase ${activeKey == 2 ? 'hidden': 'inline-block'} text-[13.5px] font-semibold px-8 border text-blue-600 bg-[#e9e9e9] py-1 rounded`} onClick={()=>setActiveKey(2)}>view</button>
                                     </div>
                                     )}
                                 key="2" 
                                 showArrow={false} 
                                 className="bg-white my-2"
                             >
-                                <p>{'text'}</p>
+                                <div className="flex flex-col">
+                                    <div className="flex bg-white px-4 relative capitalize font-semibold text-sm rounded py-2 mb-2">
+                                        <div className="text-start w-[58%] pb-8">
+                                            <div className="flex items-center gap-4">
+                                                <Image alt="newRelease1" src={'/sapnaHome/newRelease1.jpg'} width={60} height={100} />
+                                                <div className="flex flex-col">
+                                                    <p>book name</p>
+                                                    <p className="text-[#2e3292] font-bold">&#8377;120&nbsp; <span className="line-through text-gray-500">&#8377;160</span></p>
+                                                </div>
+                                            </div>
+                                            <button className="hover:text-slate-950 text-slate-800 capitalize mt-3 mb-1 text-end absolute right-0 bottom-0">Dispatched in 2-4 working days for pincode 821311</button>
+                                        </div>
+                                        <div className="flex gap-32 bg-white items-center">
+                                            <select className="px-3.5 py-1.5 border rounded-md outline-none">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                            <h1 className="text-[#2e3292] text-[16px] font-semibold">&#8377;140</h1>
+                                        </div>
+                                        <button className="px-1 py-0.5 rounded-full border absolute right-2">
+                                            <i className='bx bx-trash'></i>
+                                        </button>
+                                    </div> 
+                                    <button className="bg-orange-500 text-white mt-2 py-2 px-8 font-bold uppercase rounded ml-auto hover:bg-[#ef8c29]" onClick={()=>setActiveKey(3)} >proceed to payment</button>   
+                                </div> 
                             </Collapse.Panel>
-                            <Collapse.Panel header="This is panel header 3" key="3" showArrow={false} onClick={()=>setActiveKey(3)}>
-                                <p>{'text'}</p>
+                            <Collapse.Panel 
+                                header={(
+                                    <div className="bg-white flex justify-between py-3 items-center mb-2">
+                                        <div className="flex gap-2 items-center">
+                                            <i className='bx bxs-check-circle text-orange-400 text-5xl'></i>
+                                            <div className="">
+                                                <p className="text-gray-500 text-[18px] font-semibold">Payment Options</p>
+                                                <p className="text-sm text-gray-400 font-semibold">100% Secure Payment Gateway, checkout with confidence</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    )}
+                                key="3" 
+                                showArrow={false} 
+                                className="bg-white my-2"
+                            >
+                                <Tabs tabPosition={'left'} defaultActiveKey="3">
+                                    <Tabs.TabPane 
+                                        tab={
+                                            <div className="flex gap-3 items-center">
+                                                <Image alt="e-gift-card" src={'/sapnaHome/payment-egift.png'} width={30} height={20}/>
+                                                <p className="text-[#2e3292] font-semibold">E-Gift Card</p>
+                                            </div>
+                                        } 
+                                        key={1}
+                                    
+                                    >
+                                        <h1>welcome</h1>
+                                    </Tabs.TabPane>
+                                    <Tabs.TabPane 
+                                        disabled
+                                        tab={
+                                            <div className="flex gap-3 items-center">
+                                                <Image alt="e-gift-card" src={'/sapnaHome/payment-wallet.png'} width={30} height={20}/>
+                                                <p className="text-[#ccc] font-semibold capitalize">sapna wallet</p>
+                                            </div>
+                                        } 
+                                        key={2}
+                                    
+                                    >
+                                    </Tabs.TabPane>
+                                    <Tabs.TabPane 
+                                        tab={
+                                            <div className="flex gap-3 items-center">
+                                                <Image alt="e-gift-card" src={'/sapnaHome/payment-addcard.png'} width={30} height={20}/>
+                                                <p className="text-[#2e3292] font-semibold capitalize">pay by Card</p>
+                                            </div>
+                                        } 
+                                        key={3}
+                                    
+                                    >
+                                            <h1 className="mb-5 font-semibold">Pay using your Visa, Mastercard or Amex Cards</h1>
+                                            <Form onFinish={onFormSubmit} className="grid grid-cols-2 gap-x-6 px-3">
+                                                
+                                                <div className="col-span-2">
+                                                    <label htmlFor="" className="font-semibold text-gray-500">Card Number</label>
+                                                    <Form.Item
+                                                        name="card-number"
+                                                        rules={[
+                                                            {
+                                                                required: true,
+                                                                message: (
+                                                                    <h1 className="text-[13px] font-semibold flex items-center gap-1"><i class='bx bx-info-circle text-base'></i>Card Number is required !</h1>
+                                                                )
+                                                            }
+                                                        ]}
+                                                        className="col-span-1"
+                                                    >
+                                                        <Input className="py-1.5 placeholder:capitalize focus:placeholder:text-gray-600" placeholder='card number' />
+                                                    </Form.Item>
+                                                </div>
+                                                <div className="col-span-2">
+                                                    <label htmlFor="" className="font-semibold text-gray-500">Name on Card</label>
+                                                    <Form.Item
+                                                        name="cardholder"
+                                                        rules={[
+                                                            {
+                                                                required: true,
+                                                                message: (
+                                                                    <h1 className="text-[13px] font-semibold flex items-center gap-1">
+                                                                        <i class='bx bx-info-circle text-base'></i>
+                                                                        Name on Card is required !
+                                                                    </h1>
+                                                                )
+                                                            }
+                                                        ]}
+                                                        className="col-span-1"
+                                                    >
+                                                        <Input className="py-1.5 placeholder:capitalize focus:placeholder:text-gray-600" placeholder='cardholder name' />
+                                                    </Form.Item>
+                                                </div>
+                                                <div>
+                                                    <label htmlFor="" className="font-semibold text-gray-500">Expiry</label>
+                                                    <Form.Item
+                                                        name="expiry"
+                                                        rules={[
+                                                            {
+                                                                required: true,
+                                                                message: (
+                                                                    <h1 className="text-[13px] font-semibold flex items-center gap-1">
+                                                                        <i class='bx bx-info-circle text-base'></i>
+                                                                        Expiry is required !
+                                                                    </h1>
+                                                                )
+                                                            }
+                                                        ]}
+                                                        className="col-span-1"
+                                                    >
+                                                        <Input className="py-1.5 placeholder:capitalize focus:placeholder:text-gray-600" placeholder='MM/YY'/>
+                                                    </Form.Item>
+                                                </div>
+                                                <div>
+                                                    <label htmlFor="" className="font-semibold text-gray-500">
+                                                        <Tooltip color="#fff" placement="right" title={<p className="text-[11px] text-gray-500">The CVV code is on the back of your card, or in the front for American Express credit cards</p>}>
+                                                            CVV or CVC
+                                                            <i class='bx bx-info-circle text-base ml-1'></i>
+                                                        </Tooltip>
+                                                    </label>
+                                                    <Form.Item
+                                                        name="cvv"
+                                                        rules={[
+                                                            {
+                                                                required: true,
+                                                                message: (
+                                                                    <h1 className="text-[13px] font-semibold flex items-center gap-1">
+                                                                        <i class='bx bx-info-circle text-base'></i>
+                                                                        CVV or CVC is required !
+                                                                    </h1>
+                                                                )
+                                                            }
+                                                        ]}
+                                                        className="col-span-1"
+                                                    >
+                                                        <Input className="py-1.5" />
+                                                    </Form.Item>
+                                                </div>
+                                                <div className="col-span-2 ml-auto">
+                                                    <Button htmlType="submit" size="large" className="bg-orange-500 flex gap-10 items-center" style={{borderRadius: '3px'}}>
+                                                        <p className="uppercase text-[13px] font-bold text-white px-4">pay now</p>
+                                                        <i className='bx bx-arrow-back bx-rotate-180 text-white' style={{fontWeight: '600'}}></i>
+                                                    </Button>
+                                                </div>
+                                            </Form>
+                                    </Tabs.TabPane>
+                                    <Tabs.TabPane 
+                                        tab={
+                                            <div className="flex gap-3 items-center">
+                                                <Image alt="e-gift-card" src={'/sapnaHome/payment-banking.png'} width={30} height={20}/>
+                                                <p className="text-[#2e3292] font-semibold capitalize">net banking</p>
+                                            </div>
+                                        } 
+                                        key={4}
+                                    
+                                    >
+                                        <h1>welcome</h1>
+                                    </Tabs.TabPane>
+                                    <Tabs.TabPane 
+                                        tab={
+                                            <div className="flex gap-3 items-center">
+                                                <Image alt="e-gift-card" src={'/sapnaHome/payment-wallet.png'} width={30} height={20}/>
+                                                <p className="text-[#2e3292] font-semibold capitalize">wallet</p>
+                                            </div>
+                                        } 
+                                        key={5}
+                                    
+                                    >
+                                        <h1>welcome</h1>
+                                    </Tabs.TabPane>
+                                    <Tabs.TabPane 
+                                        tab={
+                                            <div className="flex gap-3 items-center">
+                                                <Image alt="e-gift-card" src={'/sapnaHome/payment-upiicon.png'} width={30} height={20}/>
+                                                <p className="text-[#2e3292] font-semibold uppercase">upi</p>
+                                            </div>
+                                        } 
+                                        key={6}
+                                    
+                                    >
+                                        <h1>welcome</h1>
+                                    </Tabs.TabPane>
+                                    <Tabs.TabPane 
+                                        disabled
+                                        tab={
+                                            <div className="flex gap-3 items-center">
+                                                <Image alt="e-gift-card" src={'/sapnaHome/payment-cod.png'} width={30} height={20}/>
+                                                <p className="text-[#ccc] font-semibold capitalize">cash on delivery</p>
+                                            </div>
+                                        } 
+                                        key={7}
+                                    >
+                                    </Tabs.TabPane>
+                                    <Tabs.TabPane 
+                                        tab={
+                                            <div className="flex gap-3 items-center">
+                                                <Image alt="e-gift-card" src={'/sapnaHome/payment-cod.png'} width={30} height={20}/>
+                                                <p className="text-[#2e3292] font-semibold capitalize">DD OR cheque</p>
+                                            </div>
+                                        } 
+                                        key={8}
+                                    
+                                    >
+                                        <h1>welcome</h1>
+                                    </Tabs.TabPane>
+                                </Tabs>
+                                
                             </Collapse.Panel>
                         </Collapse>
                     </div>
