@@ -217,6 +217,9 @@ const Slug = ()=>{
             title: 'All',
         },
     ]
+    const onProductClick = (label)=>{
+        router.push(`/shop/products/${label.toLowerCase().split(" ").join("-")}`)
+    }
 
     return(
         <Layout title={`Buy ${router.query.slug && router.query.slug.toLowerCase().split("-").join(" ")}`}>

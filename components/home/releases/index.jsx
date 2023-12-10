@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation, Pagination, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
+import router from 'next/router';
 
 const fictionBanners =[
     {
@@ -148,6 +149,10 @@ const weekDeals =[
 ]
 
 const Releases = ()=>{    
+    const pushToProducts = ()=>{
+        router.push("/shop/products")
+    }
+    
     const targetDate = new Date()
     targetDate.setDate(targetDate.getDate() + 7);
 
@@ -176,7 +181,7 @@ const Releases = ()=>{
         <div className="shadow-lg new-release">
             <div className="border-b bg-white flex justify-between px-3 py-2 items-center">
                 <p className="capitalize text-[#282c96] font-semibold">new Releases</p>
-                <Link href={'/'} legacyBehavior >
+                <Link href={'/shop/products'} legacyBehavior >
                     <button className="uppercase bg-[#282c96] px-2.5 rounded py-1.5 font-semibold text-white text-sm">view all</button>
                 </Link>
             </div>
@@ -201,7 +206,7 @@ const Releases = ()=>{
                         fictionBanners.map((banner, bannerIndex)=>(
                         <SwiperSlide key={bannerIndex} className="py-8 cursor-pointer">
                             <div className="bg-white flex justify-center items-center flex-col py-6 gap-3 hover:-translate-y-2 hover:shadow-xl duration-500 ">
-                                <button className="border-2 w-[124px] h-[175px] bg-purple-600 relative mx-auto">
+                                <button onClick={pushToProducts} className="border-2 w-[124px] h-[175px] bg-purple-600 relative mx-auto">
                                     <Image src={banner.path} alt={banner.label} layout="fill"  className="w-full h-full"/>
                                 </button>
                                 <div className="flex flex-col items-center px-8">
