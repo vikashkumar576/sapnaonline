@@ -76,3 +76,12 @@
     box-shadow: 0px 0px 1px rgb(152, 150, 150);
     border-radius: 3px;
   } */
+  .ant-tabs-ink-bar{
+    border: 2px solid #2e3292;
+  }
+  .ant-tabs-tab-active{
+    color: red;
+  }
+  #rc-tabs-1-tab-1{
+    color: red;
+  }

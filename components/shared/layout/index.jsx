@@ -325,7 +325,7 @@ const Layout = ({children, title='', description='', keywords=''}) => {
     <>
       <Head>
         <link rel="icon" href="/sapnaHome/sapna-logo.png" />
-        <title>{title} - {process.env.NEXT_PUBLIC_DOMAIN}</title>
+        <title>{title+'-' +process.env.NEXT_PUBLIC_DOMAIN } </title>
         <meta name="description" content={description}/>
         <meta name="keywords" content={keywords}/>
         <meta name="robots" content="index,follow"/>
@@ -338,7 +338,7 @@ const Layout = ({children, title='', description='', keywords=''}) => {
       <nav className='bg-[#2e3292] text-white top-nav'>
         <div className='container w-[88%] mx-auto py-1 flex items-center justify-between pr-9'>
           <Link href={'/'} legacyBehavior>
-            <p className='text-[11px] text-gray-200'>Express Delivery Available on selected Pin Codes! Shop Now!</p>
+            <p className='text-[11px] text-gray-200 hidden md:block'>Express Delivery Available on selected Pin Codes! Shop Now!</p>
           </Link>
           
           <div className="flex text-[11px] gap-4 items-center">
@@ -371,7 +371,6 @@ const Layout = ({children, title='', description='', keywords=''}) => {
             </div>
           </div>
         </div>
-       
       </nav>
       <nav className='middle-nav border-b  pb-2 pt-2 sticky top-0 z-50 bg-white shadow-sm'>
         <div className="container w-[88%] mx-auto py-2 flex justify-between">
@@ -379,7 +378,7 @@ const Layout = ({children, title='', description='', keywords=''}) => {
             <button onClick={backToHome}>
               <Image src={'/sapnaHome/logo-black.png'} width={130} height={90}></Image>
             </button>
-            <div className="relative flex items-center">
+            <div className="relative md:flex hidden items-center ">
                 <input type="search" className='border border-blue-700 w-[600px] py-2 rounded-l bg-gray-100 focus:placeholder:text-black outline-none px-3 text-sm' placeholder='Search books by title, author, ISBN' />
                 <select
                   className="w-fit outline-none border-none absolute right-12 text-blue-950"
@@ -412,7 +411,7 @@ const Layout = ({children, title='', description='', keywords=''}) => {
           </div>
         </div>
       </nav>
-      <nav className='bottom-nav border-b-[3px] shadow-lg pl-2 border-gray-300'>
+      <nav className='bottom-nav shadow-md pl-2 hidden md:block'>
         <div className="className='container w-[88%] mx-auto">
           <ul className='inline-flex gap-6 uppercase items-center font-semibold text-sm '>
             <Dropdown
@@ -433,12 +432,12 @@ const Layout = ({children, title='', description='', keywords=''}) => {
           </ul>
         </div>
       </nav>
-      <section className="min-h-screen bg-[#f1f3f6] py-2">
+      <section className="min-h-screen bg-[#f1f3f6] py-4">
         {children}
       </section>
       <footer className='border-t-2 shadow-lg pt-4'>
-        <div className="container w-[88%] mx-auto py-2 grid grid-cols-5 gap-10">
-          <div className="col-span-2 flex items-start">
+        <div className="container w-[88%] mx-auto py-2 grid md:grid-cols-5 gap-10">
+          <div className="md:col-span-2 flex flex-col md:flex-row md:gap-0 gap-8 items-start">
             <Image src={'/sapnaHome/52years.png'} alt='footer-image' width={200} height={100}/>
             <div className="col-span-1 flex flex-col gap-2">
               <h1 className='text-[#2e3292] font-semibold'>About SapnaOnline</h1>
@@ -505,13 +504,13 @@ const Layout = ({children, title='', description='', keywords=''}) => {
           </div>
         </div>
       </footer>
-      <footer className='bg-[#2e3292] p-3 '>
-        <div className="container w-[90%] mx-auto flex justify-between font-semibold">
+      <footer className='bg-[#2e3292] p-3'>
+        <div className="container w-[90%] mx-auto flex justify-between font-semibold flex-col md:flex-row md:gap-0 gap-6">
           <div>
             <p className='text-white  text-xs'>© 2001-2022 Sapna Infoway Private Limited. All rights reserved.</p>
           </div>
 
-          <div className="flex gap-6">
+          <div className="flex gap-4 md:flex-row flex-col">
             {
               menus.map((title, titleIndex)=>(
                 <Link href={title.href} key={titleIndex} legacyBehavior>
