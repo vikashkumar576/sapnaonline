@@ -197,7 +197,7 @@ const navmenus = [
   },
 ];
 
-const Layout = ({children, title='', description='', keywords=''}) => {
+const Layout = ({children, title='', description='', keywords='', isIncart}) => {
   const [selectedValue, setSelectedValue] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter(null)
@@ -320,7 +320,8 @@ const Layout = ({children, title='', description='', keywords=''}) => {
       key: '8',
     },
   ];
-  
+  const valueOfCart = isIncart ? 'hidden' : 'block' ;
+  const cartFooter = isIncart ? 'bg-white text-gray-400' : 'bg-[#2e3292] text-white'
   return (
     <>
       <Head>
@@ -435,7 +436,7 @@ const Layout = ({children, title='', description='', keywords=''}) => {
       <section className="min-h-screen bg-[#f1f3f6] py-4">
         {children}
       </section>
-      <footer className='border-t-2 shadow-lg pt-4'>
+      <footer className={`border-t-2 shadow-lg pt-4 ${valueOfCart}`}>
         <div className="container w-[88%] mx-auto py-2 grid md:grid-cols-5 gap-10">
           <div className="md:col-span-2 flex flex-col md:flex-row md:gap-0 gap-8 items-start">
             <Image src={'/sapnaHome/52years.png'} alt='footer-image' width={200} height={100}/>
@@ -504,17 +505,17 @@ const Layout = ({children, title='', description='', keywords=''}) => {
           </div>
         </div>
       </footer>
-      <footer className='bg-[#2e3292] p-3'>
+      <footer className={`${cartFooter} p-3`}>
         <div className="container w-[90%] mx-auto flex justify-between font-semibold flex-col md:flex-row md:gap-0 gap-6">
           <div>
-            <p className='text-white  text-xs'>© 2001-2022 Sapna Infoway Private Limited. All rights reserved.</p>
+            <p className=' text-xs'>© 2001-2022 Sapna Infoway Private Limited. All rights reserved.</p>
           </div>
 
           <div className="flex gap-4 md:flex-row flex-col">
             {
               menus.map((title, titleIndex)=>(
                 <Link href={title.href} key={titleIndex} legacyBehavior>
-                  <a className='text-white text-xs capitalize hover:text-gray-300'>{title.title}</a>
+                  <a className=' text-xs capitalize hover:text-gray-300'>{title.title}</a>
                 </Link>
               ))
             }
@@ -524,7 +525,7 @@ const Layout = ({children, title='', description='', keywords=''}) => {
             {
               social.map((title, titleIndex)=>(
                 <Link href={title.href} key={titleIndex} legacyBehavior>
-                  <a className='text-white text-xs capitalize hover:text-gray-300'>{title.title}</a>
+                  <a className=' text-xs capitalize hover:text-gray-300'>{title.title}</a>
                 </Link>
               ))
             }
