@@ -2,10 +2,13 @@ import React, {useState} from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Badge, Form, Input, InputNumber, Menu, Modal, Tabs } from 'antd'
+import { Badge, Form, Input, InputNumber, Menu, Modal, Tabs, message } from 'antd'
 import { InfoCircleOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
 import { useRouter } from 'next/router'
+import axios from 'axios';
+
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL 
 
 const menus = [
   {
@@ -198,6 +201,7 @@ const navmenus = [
 ];
 
 const Layout = ({children, title='', description='', keywords='', isIncart}) => {
+  
   const [selectedValue, setSelectedValue] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter(null)
@@ -322,6 +326,35 @@ const Layout = ({children, title='', description='', keywords='', isIncart}) => 
   ];
   const valueOfCart = isIncart ? 'hidden' : 'block' ;
   const cartFooter = isIncart ? 'bg-white text-gray-400' : 'bg-[#2e3292] text-white'
+
+  const onUserSignup = async (values)=>{
+    try {
+      await axios.post("api/auth/signup", values);
+      handleOk()
+      message.success("Signup success !");
+    } 
+    catch (err) 
+    {
+      console.log(err);
+      await message.error("Something went wrong !");
+      message.error("Try again later !");
+    }
+  }
+
+  const onUserLogin = async (values)=>{
+    try {
+      await axios.post("/api/auth/login", values);
+      handleOk()
+      message.success("login success !");
+    } 
+    catch (err) 
+    {
+      if (err.response.status == 401) return message.error("Invalid credentials !");
+
+      if (err.response.status == 404) return message.error("User does not exists !")
+    }
+  }
+
   return (
     <>
       <Head>
@@ -559,7 +592,7 @@ const Layout = ({children, title='', description='', keywords='', isIncart}) => 
                       <h1 className='capitalize text-[#2e3292] font-semibold'>new user</h1>
                     }>
                     <div className="px-2">
-                      <Form onFinish={(values)=>console.log(values)}
+                      <Form onFinish={onUserSignup}
                         name='new-user'
                         className='border-b border-gray-300'
                         form={signupForm}
@@ -578,7 +611,7 @@ const Layout = ({children, title='', description='', keywords='', isIncart}) => 
                             }
                           ]}
                         >
-                          <Input placeholder='full name' className='py-2 focus:placeholder:text-gray-600  placeholder:text-gray-500 font-semibold capitalize'/>
+                          <Input placeholder='full name' className='py-2 focus:placeholder:text-gray-600  placeholder:text-gray-500 font-semibold'/>
                         </Form.Item>
                         <Form.Item 
                         name='mobile'
@@ -614,7 +647,7 @@ const Layout = ({children, title='', description='', keywords='', isIncart}) => 
                             }
                           ]}
                         >
-                          <Input placeholder='email address' className='py-2 focus:placeholder:text-gray-600  placeholder:text-gray-500 font-semibold capitalize'/>
+                          <Input placeholder='email address' className='py-2 focus:placeholder:text-gray-600  placeholder:text-gray-500 font-semibold'/>
                         </Form.Item>
                         <Form.Item
                         name='password'
@@ -653,7 +686,7 @@ const Layout = ({children, title='', description='', keywords='', isIncart}) => 
                       <h1 className='capitalize text-[#2e3292] font-semibold'>existing user</h1>
                     }>
                     <div className="px-2 overflow-y-auto h-[450px]">
-                      <Form onFinish={(values)=>alert(values)} form={loginForm}>
+                      <Form onFinish={onUserLogin} form={loginForm}>
                       <Form.Item
                         name='email'
                           rules={[
@@ -672,7 +705,7 @@ const Layout = ({children, title='', description='', keywords='', isIncart}) => 
                             }
                           ]}
                         >
-                          <Input placeholder='email address' className='py-2 focus:placeholder:text-gray-600 placeholder:text-gray-500 capitalize font-semibold'/>
+                          <Input placeholder='email address' className='py-2 focus:placeholder:text-gray-600 placeholder:text-gray-500 font-semibold'/>
                         </Form.Item>
                         <Form.Item
                         name='password'
