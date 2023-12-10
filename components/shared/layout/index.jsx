@@ -401,7 +401,7 @@ const Layout = ({children, title='', description='', keywords='', isIncart}) => 
                 <p className='capitalize text-blue-900 text-sm'>my account</p>
               </button>
 
-            <Link href={'/login'} legacyBehavior>
+            <Link href={'/cart'} legacyBehavior>
               <button className='flex items-center font-semibold gap-3'>
                 <Badge count={1} size='small' color='lime' className='text-black'>
                   <i className='bx bx-shopping-bag text-2xl text-blue-900 '></i>
