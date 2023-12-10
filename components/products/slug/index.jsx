@@ -220,6 +220,9 @@ const Slug = ()=>{
     const onProductClick = (label)=>{
         router.push(`/shop/products/${label.toLowerCase().split(" ").join("-")}`)
     }
+    const goToCheckout =()=>{
+        router.push("/checkout")
+    }
 
     return(
         <Layout title={`Buy ${router.query.slug && router.query.slug.toLowerCase().split("-").join(" ")}`}>
@@ -356,7 +359,7 @@ const Slug = ()=>{
                                             <i className='bx bx-archive py-2 px-3 bg-[#ec991e] rounded-l text-2xl'></i>
                                             <p className="py-2.5 px-4 bg-[#f7a937] rounded-r uppercase text-sm w-full font-semibold">add to cart</p>
                                         </button>
-                                        <button className="flex text-white w-full mt-3">
+                                        <button className="flex text-white w-full mt-3" onClick={goToCheckout}>
                                             <i className='bx bxs-bolt py-2 px-3 bg-[#ef6c00] rounded-l text-2xl'></i>
                                             <p className="py-2.5 px-4 bg-[#f57c00] rounded-r uppercase text-sm w-full font-semibold">buy now</p>
                                         </button>
