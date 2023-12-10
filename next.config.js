@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
-// next.config.js
-const nextConfig = {
+module.exports = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['fakestoreapi.com'],
+    domains: ['sapnanline.s3.ap-south-1.amazonaws.com'],
   },
 };
-
-module.exports = nextConfig;
