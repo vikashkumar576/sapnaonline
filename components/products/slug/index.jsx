@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import 'swiper/css';
@@ -9,6 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
 import { Breadcrumb, Form, Input, Rate, Select, Tooltip, Button, Progress, Tabs } from "antd";
 import Layout from "@/components/shared/layout"
+import { useSelector } from "react-redux";
 
 const cartImgs = [
     {
@@ -36,94 +36,6 @@ const cartImgs = [
         desc: 'above ₹499'
     },
 ]
-
-const bookSpex = [
-    {
-        label: 'ISBN-13',
-        value: '9780007527502'
-    },
-    {
-        label: 'Publishing Date',
-        value: '2013-09-26'
-    },
-    
-    {
-        label: 'Language',
-        value: 'English'
-    },
-    
-    {
-        label: 'Product Edition',
-        value: '1'
-    },
-    {
-        label: 'Binding',
-        value: 'Paper Back'
-    },
-    {
-        label: 'Total Pages',
-        value: '288'
-    },
-    {
-        label: 'Publisher',
-        value: 'Harper Collins : Uk'
-    },
-]
-
-const fictionBanners =[
-    {
-        path: '/sapnaHome/seller-1.jpg',
-        label : 'Maarikaadu',
-        author: 'by Chandrashekhara Kambara '
-    },
-    {
-        path: '/sapnaHome/seller-2.jpg',
-        label : 'Jugari Cross',
-        author: 'by Kp Poornachandra Thejasvi'
-    },
-    {
-        path: '/sapnaHome/seller-3.jpg',
-        label : 'Malenadina Chitragalu',
-        author: 'by Kuvempu'
-    },
-    {
-        path: '/sapnaHome/seller-4.jpg',
-        label : 'Sanyasiya Baduku',
-        author: 'by K Shivarama Karanth'
-    },
-    {
-        path: '/sapnaHome/seller-5.jpg',
-        label : 'Yerilitada Dariyalli',
-        author: 'by Sudha Murty'
-    },
-    {
-        path: '/sapnaHome/seller-6.jpg',
-        label : 'Nanna Devaru Mattu Itara Kathegalu',
-        author: 'by Kuvempu'
-    },
-    {
-        path: '/sapnaHome/seller-7.jpg',
-        label : 'Karvalho',
-        author: 'by Kp Poornachandra Thejasvi'
-    },
-    {
-        path: '/sapnaHome/seller-8.jpg',
-        label : 'Naayi Neralu',
-        author: 'by Sl Bhyrappa'
-    },
-    {
-        path: '/sapnaHome/seller-9.jpg',
-        label : 'Kannada Rathnakosha',
-        author: 'by NA'
-    },
-    {
-        path: '/sapnaHome/seller-10.jpg',
-        label : 'Amma Helida Entu Sullugalu',
-        author: 'by Ar Manikanth'
-    },
-
-]
-
 
 const allProducts = [
     {
@@ -201,6 +113,10 @@ const allProducts = [
 
 const Slug = ()=>{
     const router = useRouter();
+    const datas = useSelector((state)=>state.slugSlice.book);
+    const allbooks = useSelector((state)=>state.booksSlice.books);
+    console.log(allbooks);
+
     const beardcrum = [
         {
             title: 'Home',
@@ -217,15 +133,17 @@ const Slug = ()=>{
             title: 'All',
         },
     ]
+
     const onProductClick = (label)=>{
         router.push(`/shop/products/${label.toLowerCase().split(" ").join("-")}`)
     }
+
     const goToCheckout =()=>{
         router.push("/checkout")
     }
 
     return(
-        <Layout title={`Buy ${router.query.slug && router.query.slug.toLowerCase().split("-").join(" ")}`}>
+        <Layout title={`Buy ${router.query.slug && router.query.slug.toLowerCase().split("~")[0].split("-").join(" ")}`}>
             <div className="w-[88%] mx-auto">
                 <div className="grid md:grid-cols-10">
                     <div className="col-span-4 px-5 pt-10 bg-white relative">
@@ -238,10 +156,7 @@ const Slug = ()=>{
                                     direction="vertical"
                                     className="mySwiper max-h-64"
                                     cssMode={true}
-                                    navigation={{
-                                        prevEl: '.swiper-button-prev',
-                                        nextEl: '.swiper-button-next',
-                                    }}
+                                    navigation={false}
                                     pagination={true}
                                     mousewheel={true}
                                     keyboard={true}
@@ -249,14 +164,14 @@ const Slug = ()=>{
                                     loop={true}
                                 >
                                     <SwiperSlide>
-                                        <Image alt="book-image" src={'/sapnaHome/newRelease2.jpg'} width={75} height={100}/>
+                                        <Image alt="book-image" src={`${process.env.NEXT_PUBLIC_S3_BUCKET_ENDPOINT}${router.query.slug && datas.book.image}`} width={75} height={100}/>
                                     </SwiperSlide>
                                     <SwiperSlide>
                                         <Image alt="book-image" src={'/sapnaHome/newRelease2back.jpg'} width={75} height={100}/>
                                     </SwiperSlide>
                                 </Swiper>
                             </div>
-                            <div className="w-[320px] h-[320px] flex items-center">
+                            <div className="w-[320px] h-[320px] flex items-center mx-auto relative">
                                 <Swiper 
                                     watchSlidesProgress={true}
                                     slidesPerView={1} 
@@ -265,27 +180,33 @@ const Slug = ()=>{
                                     className="mySwiper"
                                     cssMode={true}
                                     navigation={{
-                                        prevEl: '.swiper-button-prev',
-                                        nextEl: '.swiper-button-next',
+                                        prevEl: '.book-button-prev',
+                                        nextEl: '.book-button-next',
                                     }}
                                     pagination={{
                                         clickable: true,
-                                        dynamicBullets: true
+                                        
                                     }}
                                     mousewheel={true}
                                     keyboard={true}
                                     modules={[Navigation, Pagination, Mousewheel, Keyboard, Autoplay]}
                                     loop={true}
                                 >
-                                    <SwiperSlide>
-                                        <Image alt="book-image" src={'/sapnaHome/newRelease2.jpg'} width={200} height={300} className="mx-auto"/>
+                                    <SwiperSlide >
+                                        <Image alt="book-image" src={`${process.env.NEXT_PUBLIC_S3_BUCKET_ENDPOINT}${router.query.slug && datas.book.image}`} width={200} height={300} className="mx-auto"/>
                                     </SwiperSlide>
-                                    <SwiperSlide>
+                                    <SwiperSlide >
                                         <Image alt="book-image" src={'/sapnaHome/newRelease2back.jpg'} width={200} height={100} className="mx-auto"/>
                                     </SwiperSlide>
                                 </Swiper>
+                                <div className="book-button-prev absolute -left-6 z-10 px-2 py-1 bg-gray-100 rounded-full">
+                                    <i className='bx bx-chevron-left'></i>
+                                </div>
+                                <div className="book-button-next  px-2 py-1 bg-gray-100 rounded-full">
+                                    <i className='bx bx-chevron-right'></i>
+                                </div>
                             </div>
-                            <Image alt="release-banner" src={"/sapnaHome/newrelease.svg"} width={100} height={20} className="absolute top-1.5 left-0 z-50"/>
+                            <Image alt="release-banner" src={"/sapnaHome/newrelease.svg"} width={100} height={20} className="absolute top-1.5 left-0 z-40"/>
                             <button className="absolute top-5 right-4">
                                 <i className="bx bx-bookmark p-1.5 bg-gray-50 rounded-full border text-lg"></i>
                             </button>
@@ -315,8 +236,8 @@ const Slug = ()=>{
                                 items={beardcrum}
                             />
                             <div className="leading-4 relative -top-3">
-                                <p className="text-lg text-gray-600 font-semibold capitalize">{router.query.slug && router.query.slug.split("-").join(" ")}</p>
-                                <p className="text-[14px]">by <a href="/" className="text-[#2e3292]">Agatha Christie</a> (Author), <a href="/" className="text-[#2e3292]"> Harper Collins</a> : Uk (Publisher)</p>
+                                <p className="text-lg text-gray-600 font-semibold capitalize">{router.query.slug && datas.book.title}</p>
+                                <p className="text-[14px]">by <a className="text-[#2e3292] capitalize font-semibold">{router.query.slug && datas.book.author.authorName}</a> &#40;Author&#41;, <a className="text-[#2e3292] capitalize font-semibold"> {router.query.slug && datas.book.publisher.publisherName}</a> &#40;Publisher&#41;</p>
                             </div>
                             <div className="flex gap-2">
                                 <Rate defaultValue={4} disabled style={{letterSpacing: '-5px', filter: 'drop-shadow(0px 0px 0.5px #222)'}} character={(<i className="bx bxs-star text-[16px]"></i>)} />
@@ -329,9 +250,9 @@ const Slug = ()=>{
                                     <div className="flex justify-between px-10">
                                         <div className="flex flex-col">
                                             <div className="flex items-center gap-2">
-                                                <h1 className="text-[28px] font-semibold text-[#2e3292]">&#8377;258</h1>
-                                                <p className="text-lg text-gray-500 line-through">&#8377;324</p>
-                                                <p className="text-xs text-green-600">&#40;17% off&#41;</p>
+                                                <h1 className="text-[28px] font-semibold text-[#2e3292]">&#8377;{Math.floor(router.query.slug && datas.sellPrice - ((datas.sellPrice * datas.discount) / 100))}</h1>
+                                                <p className="text-lg text-gray-500 line-through">&#8377;{router.query.slug &&  datas.sellPrice}</p>
+                                                <p className="text-xs text-green-600">&#40;{router.query.slug && datas.discount}% off&#41;</p>
                                             </div>
                                             <p className="text-xs text-gray-600">Inclusive of all taxes</p>
                                         </div>
@@ -368,7 +289,7 @@ const Slug = ()=>{
                                 <div className="border border-gray-100 p-10 grid grid-cols-4">
                                     {
                                         cartImgs.map((cartImg, cartImgIndex)=>(
-                                            <div className="col-span-1 flex flex-col items-center ">
+                                            <div key={cartImgIndex} className="col-span-1 flex flex-col items-center ">
                                                 <Image alt={cartImg.label} src={cartImg.path} width={40} height={20} className={` ${cartImg.decoration}`}/>
                                                 <p className={`text-[#2e3292] text-xs font-semibold text-center`}>{cartImg.label}</p>
                                                 <p className={`text-[9px] font-semibold text-center text-gray-400`}>{cartImg.desc}</p>
@@ -418,16 +339,51 @@ const Slug = ()=>{
                         <h1 className="font-semibold py-1">Book Specifications</h1>
                         <ul className="grid grid-cols-4 pl-4 gap-x-12">
                             <div className="col-span-3 grid grid-cols-2 gap-x-12 gap-y-1 pt-2 pb-4">
-                                {
-                                    bookSpex.map((book, bookIndex)=>(
-                                        <li key={bookIndex} className="list-disc col-span-1 text-sm">
-                                            <div className="flex justify-start">
-                                                <h1 className="font-semibold mr-32 w-28">{book.label}</h1>
-                                                <span>{book.value}</span>
-                                            </div>
-                                        </li>
-                                    ))
-                                }
+                                <li className="list-disc col-span-1 text-sm">
+                                    <div className="flex justify-start">
+                                        <h1 className="font-semibold mr-32 w-28 capitalize">ISBN-13</h1>
+                                        <span>9874581325484</span>
+                                    </div>
+                                </li>
+                                <li className="list-disc col-span-1 text-sm">
+                                    <div className="flex justify-start">
+                                        <h1 className="font-semibold mr-32 w-28 capitalize">Publishing date</h1>
+                                        {
+                                            
+                                        }
+                                        <span className="capitalize">{router.query.slug && (new Date(datas.book.publishDate)).getFullYear()}</span>
+                                    </div>
+                                </li>
+                                <li className="list-disc col-span-1 text-sm">
+                                    <div className="flex justify-start">
+                                        <h1 className="font-semibold mr-32 w-28 capitalize">Language</h1>
+                                        <span className="capitalize">{router.query.slug && datas.book.language}</span>
+                                    </div>
+                                </li>
+                                <li className="list-disc col-span-1 text-sm">
+                                    <div className="flex justify-start">
+                                        <h1 className="font-semibold mr-32 w-28 capitalize">Product Edition</h1>
+                                        <span className="capitalize">{router.query.slug && datas.book.edition}</span>
+                                    </div>
+                                </li>
+                                <li className="list-disc col-span-1 text-sm">
+                                    <div className="flex justify-start">
+                                        <h1 className="font-semibold mr-32 w-28 capitalize">Binding</h1>
+                                        <span className="capitalize">{router.query.slug && datas.book.binding}</span>
+                                    </div>
+                                </li>
+                                <li className="list-disc col-span-1 text-sm">
+                                    <div className="flex justify-start">
+                                        <h1 className="font-semibold mr-32 w-28 capitalize">Total Pages</h1>
+                                        <span className="capitalize">{router.query.slug && datas.book.pages}</span>
+                                    </div>
+                                </li>
+                                <li className="list-disc col-span-1 text-sm">
+                                    <div className="flex justify-start">
+                                        <h1 className="font-semibold mr-32 w-28 capitalize">publisher</h1>
+                                        <span className="capitalize">{router.query.slug && datas.book.publisher.publisherName}</span>
+                                    </div>
+                                </li>
                             </div>
                         </ul>
                     </div>
@@ -520,35 +476,35 @@ const Slug = ()=>{
                                 loop={true}
                             >
                                 {
-                                    allProducts.map((product, productIndex)=>(
+                                    allbooks && allbooks.map((product, productIndex)=>(
                                         <SwiperSlide key={productIndex} className="py-3 cursor-pointer">
-                                            <div className="card flex flex-col gap-4 justify-center items-start p-5 col-span-1 bg-white relative">
-                                                <button className="mx-auto w-[120px] h-[195px] relative" onClick={()=>onProductClick(product.label)}>
-                                                    <Image alt="book-image" src={product.path} layout="fill" />
+                                            <div className="card flex flex-col gap-4 justify-center items-start p-5 col-span-1 bg-white relative h-[420px]">
+                                                <button className="mx-auto w-[120px] h-[195px] relative" onClick={()=>onProductClick(product._id, product.book.title)}>
+                                                    <Image alt="book-image" src={process.env.NEXT_PUBLIC_S3_BUCKET_ENDPOINT+product.book.image} layout="fill" />
                                                 </button>
                                                 <div className="flex gap-1 flex-col">
-                                                    <Link  href={`/shop/products/${product.label.toLowerCase().split(" ").join("-")}`} legacyBehavior >
-                                                        <a className="font-semibold text-sm">{product.label}</a>
+                                                    <Link  href={`/shop/products/${product.book.title.toLowerCase().split(" ").join("-")}~${product._id}`} legacyBehavior >
+                                                        <a className="font-semibold text-sm">{product.book.title}</a>
                                                     </Link>
-                                                    <p className="text-xs text-gray-400">{product.author}</p>
+                                                    <p className="text-xs text-gray-400 font-semibold">By: <span className="text-indigo-500 capitalize">{product.book.author.authorName}, <span className="text-gray-500">{product.book.publisher.publisherName}</span></span></p>
                                                     <div className="flex gap-3 items-center">
                                                         <Rate disabled defaultValue={4} character={(<i className='bx bxs-star'></i>)} style={{fontSize: '20px', letterSpacing: '-7px'}} />
                                                         <p className="text-[10px] text-gray-400">(234)</p>
                                                     </div>
                                                 </div>
                                                 <div className="flex gap-2 items-center">
-                                                    <p className="text-xl font-semibold text-[#2e3292]">&#8377;{ Math.floor(product.price - ((product.price * product.discount) / 100))}</p>
-                                                    <p className="line-through text-gray-400">&#8377;{product.price}</p>
+                                                    <p className="text-xl font-semibold text-[#2e3292]">&#8377;{ Math.floor(product.sellPrice - ((product.sellPrice * product.discount) / 100))}</p>
+                                                    <p className="line-through text-gray-400">&#8377;{product.sellPrice}</p>
                                                     <p className="text-green-600">&#40;{product.discount}% off&#41;</p>
                                                 </div>
                                                 <button className="flex text-white w-full mt-3">
-                                                    <i className='bx bx-archive py-1.5 px-3 text-xl bg-[#ec991e] rounded-l '></i>
-                                                    <p className="py-1.5 px-4 bg-[#f7a937] rounded-r uppercase text-sm w-full font-semibold">add to cart</p>
+                                                    <i className='bx bxs-shopping-bag-alt py-2 text-xl px-3 bg-[#ec991e] rounded-l '></i>
+                                                    <p className="py-2 px-4 bg-[#f7a937] rounded-r uppercase text-sm w-full font-semibold">add to cart</p>
                                                 </button>
                                                 <button className=" absolute top-3 right-3">
                                                     <i className='bx bx-bookmark border p-1 rounded-full bg-gray-50 text-lg'></i>
                                                 </button>
-                                                <Image alt="offer-banner" src='/sapnaHome/bestseller.svg' width={80} height={10} className="absolute top-4 left-0"/>
+                                                <Image alt="offer-banner" src='/sapnaHome/newrelease.svg' width={80} height={10} className="absolute top-4 left-0"/>
                                             </div>
                                         </SwiperSlide>
                                     ))
@@ -582,35 +538,34 @@ const Slug = ()=>{
                                 loop={true}
                             >
                                 {
-                                    allProducts.map((product, productIndex)=>(
+                                    allbooks && allbooks.map((product, productIndex)=>(
                                         <SwiperSlide key={productIndex} className="py-3 cursor-pointer">
-                                            <div className="card flex flex-col gap-4 justify-center items-start p-5 col-span-1 bg-white relative">
-                                                <button className="mx-auto w-[120px] h-[195px] relative" onClick={()=>onProductClick(product.label)}>
-                                                    <Image alt="book-image" src={product.path} layout="fill" />
+                                            <div className="card flex flex-col gap-4 justify-center items-start p-5 col-span-1 bg-white relative h-[420px]">
+                                                <button className="mx-auto w-[120px] h-[195px] relative" onClick={()=>onProductClick(product._id, product.book.title)}>
+                                                    <Image alt="book-image" src={process.env.NEXT_PUBLIC_S3_BUCKET_ENDPOINT+product.book.image} layout="fill" />
                                                 </button>
                                                 <div className="flex gap-1 flex-col">
-                                                    <Link  href={`/shop/products/${product.label.toLowerCase().split(" ").join("-")}`} legacyBehavior >
-                                                        <a className="font-semibold text-sm">{product.label}</a>
+                                                    <Link  href={`/shop/products/${product.book.title.toLowerCase().split(" ").join("-")}~${product._id}`} legacyBehavior >
+                                                        <a className="font-semibold text-sm">{product.book.title}</a>
                                                     </Link>
-                                                    <p className="text-xs text-gray-400">{product.author}</p>
+                                                    <p className="text-xs text-gray-400 font-semibold">By: <span className="text-indigo-500 capitalize">{product.book.author.authorName}, <span className="text-gray-500">{product.book.publisher.publisherName}</span></span></p>
                                                     <div className="flex gap-3 items-center">
                                                         <Rate disabled defaultValue={4} character={(<i className='bx bxs-star'></i>)} style={{fontSize: '20px', letterSpacing: '-7px'}} />
                                                         <p className="text-[10px] text-gray-400">(234)</p>
                                                     </div>
                                                 </div>
                                                 <div className="flex gap-2 items-center">
-                                                    <p className="text-xl font-semibold text-[#2e3292]">&#8377;{ Math.floor(product.price - ((product.price * product.discount) / 100))}</p>
-                                                    <p className="line-through text-gray-400">&#8377;{product.price}</p>
+                                                    <p className="text-xl font-semibold text-[#2e3292]">&#8377;{ Math.floor(product.sellPrice - ((product.sellPrice * product.discount) / 100))}</p>
+                                                    <p className="line-through text-gray-400">&#8377;{product.sellPrice}</p>
                                                     <p className="text-green-600">&#40;{product.discount}% off&#41;</p>
                                                 </div>
                                                 <button className="flex text-white w-full mt-3">
-                                                    <i className='bx bx-archive py-1.5 px-3 text-xl bg-[#ec991e] rounded-l '></i>
-                                                    <p className="py-1.5 px-4 bg-[#f7a937] rounded-r uppercase text-sm w-full font-semibold">add to cart</p>
+                                                    <i className='bx bxs-shopping-bag-alt py-2 text-xl px-3 bg-[#ec991e] rounded-l '></i>
+                                                    <p className="py-2 px-4 bg-[#f7a937] rounded-r uppercase text-sm w-full font-semibold">add to cart</p>
                                                 </button>
                                                 <button className=" absolute top-3 right-3">
                                                     <i className='bx bx-bookmark border p-1 rounded-full bg-gray-50 text-lg'></i>
                                                 </button>
-                                                {/* <Image alt="offer-banner" src='/sapnaHome/bestseller.svg' width={80} height={10} className="absolute top-4 left-0"/> */}
                                             </div>
                                         </SwiperSlide>
                                     ))

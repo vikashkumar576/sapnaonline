@@ -81,7 +81,6 @@ const Sellers = ()=>{
                     prevEl: '.swiper-button-prev',
                     nextEl: '.swiper-button-next',
                 }}
-                pagination={true}
                 mousewheel={true}
                 keyboard={true}
                 modules={[Navigation, Pagination, Mousewheel, Keyboard, Autoplay]}

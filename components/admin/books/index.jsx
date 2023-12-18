@@ -4,7 +4,7 @@ import useSWR, {mutate} from "swr";
 import AdminLayout from "@/components/shared/admin-layout";
 import React, { useState } from 'react';
 import { PlusCircleTwoTone, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, DatePicker, Drawer, Form, Input, InputNumber, Modal, Pagination, Progress, Row, Select, Tabs, message } from 'antd';
+import { Button, Card, Col, DatePicker, Drawer, Empty, Form, Input, InputNumber, Modal, Pagination, Progress, Row, Select, Tabs, message } from 'antd';
 import moment from 'moment';
 import Image from "next/image";
 
@@ -37,6 +37,7 @@ const authorLanguages = [
     { "name": "English" },
     { "name": "Bengali" },
     { "name": "Telugu" },
+    { "name": "Sanskrit" },
     { "name": "Marathi" },
     { "name": "Tamil" },
     { "name": "Urdu" },
@@ -82,12 +83,13 @@ const Products = () => {
     })
     const [pagination, setPagination] = useState({
         page: 1,
-        pageLimit: 8
+        pageLimit: 10
     })
 
     const {data: allPublishers, error: publishersErr , isLoading: publishersLoading } = useSWR(`/api/publisher`, fetcher)
     const {data: allAuthors, error: authorsErr , isLoading: authorsLoading } = useSWR(`/api/author`, fetcher)
-    const {data: allStocks, error: stocksErr , isLoading: stocksLoading } = useSWR(`/api/purchase/?page=${'1'}&pageLimit=${'8'}`, stockfetcher)
+    const {data: allStocks, error: stocksErr , isLoading: stocksLoading } = useSWR(`/api/purchase/?page=${pagination.page}&pageLimit=${pagination.pageLimit}`, stockfetcher)
+    const {data: bookOption, error: selectErr , isLoading: selectLoading } = useSWR(`/api/purchase/?page=${pagination.page}&pageLimit=0`, stockfetcher)
     const {data: allBooks, error: booksErr , isLoading: booksLoading } = useSWR(`/api/books`, fetcher)
 
     const [publisherForm] = Form.useForm(null)
@@ -128,21 +130,20 @@ const Products = () => {
                 createPrdForm.resetFields(),
                 setOpen(false),
                 message.success("Purchase success !"),
-                setFormData(null)
+                setFormData(null),
+                mutate(`/api/purchase/?page=${pagination.page}&pageLimit=${pagination.pageLimit}`)
             )
 
             await axios.put(`/api/purchase/${formData._id}`, values),
             createPrdForm.resetFields(),
             setFormData(null)
             setOpen(false)
-            message.success("Purchase updated !")
+            message.success("Purchase updated !"),
+            mutate(`/api/purchase/?page=${pagination.page}&pageLimit=${pagination.pageLimit}`)
         } 
         catch (err) {
             console.log(err);
             message.error("something went wrong !")
-        }
-        finally{
-            mutate('/api/purchase')
         }
     }
 
@@ -348,44 +349,82 @@ const Products = () => {
         }
     }
 
-    // purchase image upload
-    const onProductImgUpload = (id , index)=>{
+    // publisher image upload
+    const onPublisherImgUpload = (id , index)=>{
         const input = document.createElement("input")
         input.type = "file"
         input.click()
         input.onchange = async ()=>{
-        const file = input.files[0]
-        input.remove()
-        const uploader = s3.upload({
-          Bucket: process.env.NEXT_PUBLIC_S3_BUCKET,
-          Key: file.name,
-          Body: file,
-          ACL: 'public-read'
-        })
-        uploader.on('httpUploadProgress',({total, loaded})=>{
-          const percent = Math.floor((loaded*100)/total)
-          setUploading({
-            ...uploading,
-            state: index,
-            progress: percent
-          })
-        })
-        try {
-          const {Key} = await uploader.promise()
-          await axios.put(`/api/purchase/${id}`, {image : Key})
-          mutate(`/api/purchase`)
-          setUploading({
-            state: null,
-            progress: 0
-          })
+            const file = input.files[0]
+            input.remove()
+            let path = `publishers/${file.name}`
+            const uploader = s3.upload({
+            Bucket: process.env.NEXT_PUBLIC_S3_BUCKET,
+            Key: path,
+            Body: file,
+            ACL: 'public-read'
+            })
+            uploader.on('httpUploadProgress',({total, loaded})=>{
+            const percent = Math.floor((loaded*100)/total)
+            setUploading({
+                ...uploading,
+                state: index,
+                progress: percent
+            })
+            })
+            try {
+            const {Key} = await uploader.promise()
+            await axios.put(`/api/publisher/${id}`, {$set: {image : Key}})
+            mutate(`/api/publisher`)
+            setUploading({
+                state: null,
+                progress: 0
+            })
+            }
+            catch(err)
+            {
+            console.log(err)
+            }
         }
-        catch(err)
-        {
-          console.log(err)
+    }
+
+    // purchase image upload
+    const onStockImgUpload = (id , index)=>{
+        const input = document.createElement("input")
+        input.type = "file"
+        input.click()
+        input.onchange = async ()=>{
+            const file = input.files[0]
+            input.remove()
+            const uploader = s3.upload({
+            Bucket: process.env.NEXT_PUBLIC_S3_BUCKET,
+            Key: file.name,
+            Body: file,
+            ACL: 'public-read'
+            })
+            uploader.on('httpUploadProgress',({total, loaded})=>{
+            const percent = Math.floor((loaded*100)/total)
+            setUploading({
+                ...uploading,
+                state: index,
+                progress: percent
+            })
+            })
+            try {
+            const {Key} = await uploader.promise()
+            await axios.put(`/api/purchase/${id}`, {$set: {image : Key}})
+            mutate(`/api/purchase/?page=${pagination.page}&pageLimit=${pagination.pageLimit}`)
+            setUploading({
+                state: null,
+                progress: 0
+            })
+            }
+            catch(err)
+            {
+            console.log(err)
+            }
         }
-        
-        }
-      }
+    }
 
     // author image upload
     const onAuthorImgUpload = (id , index)=>{
@@ -471,7 +510,7 @@ const Products = () => {
                                                 <Image 
                                                     alt="product" 
                                                     src={stock.image ? (process.env.NEXT_PUBLIC_S3_BUCKET_ENDPOINT+stock.image) : "/upload.png"}
-                                                    onClick={()=>onProductImgUpload(stock._id,stockIndex)} 
+                                                    onClick={()=>onStockImgUpload(stock._id,stockIndex)} 
                                                     layout="fill"
                                                 />
                                             </div>
@@ -488,34 +527,6 @@ const Products = () => {
                                     </Card>
                                 ))
                             }
-                            {/* <table className="w-full border">
-                                <thead className="bg-indigo-500 text-white">
-                                    <th className="py-1 capitalize text-start pl-5">title</th>
-                                    <th className="py-1 capitalize">price</th>
-                                    <th className="py-1 capitalize">quantity</th>
-                                    <th className="py-1 capitalize">amount</th>
-                                    <th className="py-1 capitalize">edit</th>
-                                    <th className="py-1 capitalize">delete</th>
-                                </thead>
-                                <tbody className="w-full text-center bg-indigo-50">
-                                    {
-                                        allStocks && allStocks.map((stock, stockIndex)=>(
-                                            <tr key={stockIndex} className="border-2 border-white" >
-                                                <td className="py-2 text-start pl-5 border-2 border-white capitalize">{stock.title}</td>
-                                                <td className="border-2 border-white">{stock.price}</td>
-                                                <td className="border-2 border-white">{stock.quantity}</td>
-                                                <td className="border-2 border-white">{stock.amount}</td>
-                                                <td className="border-2 border-white" onClick={()=> onPurchaseItemEdit(stock)}>
-                                                    <i className='bx bx-edit-alt text-blue-500 text-lg'></i>
-                                                </td>
-                                                <td className="border-2 border-white" onClick={()=>onPurchaseItemDelete(stock._id)}>
-                                                    <i className='bx bx-trash text-red-500 text-lg'></i>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    }
-                                </tbody>
-                            </table> */}
                         </div>
                     }
                     {
@@ -530,7 +541,7 @@ const Products = () => {
                         total={allStocks && allStocks.total} 
                         itemRender={itemRender} 
                         current={pagination.page}
-                        pageSize={8}
+                        pageSize={pagination.pageLimit}
                         onChange={(page, pageLimit)=>onPaginationChange(page, pageLimit)}
                     />
                 </div>
@@ -560,7 +571,7 @@ const Products = () => {
                                          <p className="capitalize font-semibold">book name :  <span className="font-[400]">{book.book.title}</span></p>
                                         <p className="capitalize font-semibold">cost price : <span className="font-[400]">{book.book.price}</span></p>
                                         <p className="capitalize font-semibold">selling price : <span className="font-[400]">{book.sellPrice}</span></p>
-                                        <p className="capitalize font-semibold">discount &#40;in %&#41;: <span className="font-[400]">{book.sellPrice}</span></p>
+                                        <p className="capitalize font-semibold">discount &#40;in %&#41;: <span className="font-[400]">{book.discount}</span></p>
                                         <p className="capitalize font-semibold">book language : <span className="font-[400]">{book.book.language}</span></p>
                                         <p className="capitalize font-semibold">author : <span className="font-[400]">{book.book.author.authorName}</span></p>
                                         <p className="capitalize font-semibold">publisher : <span className="font-[400]">{book.book.publisher.publisherName}</span></p>
@@ -573,6 +584,11 @@ const Products = () => {
                             }
                         </div>
                     }
+                    {
+                        allBooks && !allBooks.length && <div className="flex justify-center">
+                            <Empty className="mt-44"/>
+                        </div>
+                    }
                 </div>
             </Tabs.TabPane>
             <Tabs.TabPane
@@ -583,35 +599,38 @@ const Products = () => {
             >
                 <div className="p-2">
                     {
-                        allPublishers && <div className="">
-                            <table className="w-full border">
-                                <thead className="bg-indigo-500 text-white">
-                                    <th className="py-1 capitalize text-start pl-5">publisher name</th>
-                                    <th className="py-1 capitalize">mobile</th>
-                                    <th className="py-1 capitalize">address</th>
-                                    <th className="py-1 capitalize">established</th>
-                                    <th className="py-1 capitalize">edit</th>
-                                    <th className="py-1 capitalize">delete</th>
-                                </thead>
-                                <tbody className="w-full text-center bg-indigo-50">
-                                    {
-                                        allPublishers && allPublishers.map((publisher, publisherIndex)=>(
-                                            <tr key={publisherIndex} className="border-2 border-white" >
-                                                <td className="py-2 text-start pl-5 border-2 border-white capitalize">{publisher.publisherName}</td>
-                                                <td className="border-2 border-white">{publisher.mobile}</td>
-                                                <td className="border-2 border-white">{publisher.address}</td>
-                                                <td className="border-2 border-white">{publisher.established}</td>
-                                                <td className="border-2 border-white" onClick={()=> onEditPublisher(publisher)}>
-                                                    <i className='bx bx-edit-alt text-blue-500 text-lg'></i>
-                                                </td>
-                                                <td className="border-2 border-white" onClick={()=>onDeletePublisher(publisher._id)}>
-                                                    <i className='bx bx-trash text-red-500 text-lg'></i>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    }
-                                </tbody>
-                            </table>
+                        allPublishers && <div className="grid grid-cols-6 gap-3">
+                           {
+                                allPublishers && allPublishers.map((publisher, publisherIndex)=>(
+                                    <Card 
+                                        key={publisherIndex} 
+                                        className="shadow-md hover:shadow-xl"
+                                        cover={
+                                        (uploading.state === publisherIndex) ? 
+                                        <Progress type="circle" percent={uploading.progress} size={90} /> :
+                                            <div className="w-20 h-52 relative">
+                                                <Image 
+                                                    alt={publisher.image}
+                                                    src={publisher.image ? (process.env.NEXT_PUBLIC_S3_BUCKET_ENDPOINT+publisher.image) : "/upload.png"}
+                                                    onClick={()=>onPublisherImgUpload(publisher._id,publisherIndex)} 
+                                                    layout="fill"
+                                                />
+                                            </div>
+                                        }
+                                        >
+                                        {
+                                            console.log(publisher._id)
+                                        }
+                                        <p className="capitalize font-semibold">name :  <span className="font-[400]">{publisher.publisherName}</span></p>
+                                        <p className="capitalize font-semibold">mobile : <span className="font-[400]">{publisher.mobile}</span></p>
+                                        <p className="capitalize font-semibold">established on  : <span className="font-[400]">{publisher.established}</span></p>
+                                        <div className="flex justify-between mt-3">
+                                            <Button type="primary" className="bg-blue-400" onClick={()=> onEditPublisher(publisher)} >Edit</Button>
+                                            <Button type="primary" className="bg-rose-400" onClick={()=>onDeletePublisher(publisher._id)} >Delete</Button>
+                                        </div>
+                                    </Card>
+                                ))
+                            }
                         </div>
                     }
                     {
@@ -742,7 +761,7 @@ const Products = () => {
                         name="binding"
                         label="Binding"
                     >
-                        <InputNumber placeholder="Please enter binding" className="w-full"/>
+                        <Input placeholder="Please enter binding" className="w-full"/>
                     </Form.Item>
                     </Col>
                 </Row>
@@ -766,6 +785,9 @@ const Products = () => {
                                         </Select.Option>
                                     ))
                                 }
+                                <Select.Option value={'na'}>
+                                    <p className="capitalize">na</p>
+                                </Select.Option>
                             </Select>
                         </Form.Item>
                     </Col>
@@ -798,6 +820,9 @@ const Products = () => {
                                         </Select.Option>
                                     ))
                                 }
+                                <Select.Option value={'na'}>
+                                    <p className="capitalize">na</p>
+                                </Select.Option>
                             </Select>
                         </Form.Item>
                     </Col>
@@ -925,7 +950,7 @@ const Products = () => {
                 >
                     <Select placeholder="Select a book" >
                         {
-                            allStocks && allStocks.data.map((stock , stockIndex)=>(
+                            bookOption && bookOption.data.map((stock , stockIndex)=>(
                                 <Select.Option key={stockIndex} value={stock._id}>
                                     <p className="capitalize">{stock.title}</p>
                                 </Select.Option>

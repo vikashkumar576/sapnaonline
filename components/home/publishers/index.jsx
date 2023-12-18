@@ -4,29 +4,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation, Pagination, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
-
-const allPublishers =[
-    {
-        path: '/sapnaHome/publisher-1.jpg',
-    },
-    {
-        path: '/sapnaHome/publisher-2.jpg',
-    },
-    {
-        path: '/sapnaHome/publisher-3.jpg',
-    },
-    {
-        path: '/sapnaHome/publisher-4.jpg',
-    },
-    {
-        path: '/sapnaHome/publisher-5.jpg',
-    },
-    {
-        path: '/sapnaHome/publisher-6.jpg',
-    },
-]
+import { useSelector } from "react-redux";
 
 const Publishers = ()=>{
+    const allPublishers = useSelector((state)=>state.publisherSlice.publishers)
     return(
         <div className="container w-[88%] mx-auto shadow-lg mt-3">
             <div className="shadow-lg Sapna-Publishers">
@@ -47,23 +28,18 @@ const Publishers = ()=>{
                         prevEl: '.swiper-button-prev',
                         nextEl: '.swiper-button-next',
                     }}
-                    pagination={true}
                     mousewheel={true}
                     keyboard={true}
                     modules={[Navigation, Pagination, Mousewheel, Keyboard, Autoplay]}
                     loop={true}
                 >
                     {
-                        allPublishers.map((author, authorIndex)=>(
-                        <SwiperSlide key={authorIndex} className="cursor-pointer">
+                        allPublishers && allPublishers.map((publisher, publisherIndex)=>(
+                        <SwiperSlide key={publisherIndex} className="cursor-pointer">
                             <div className="bg-white flex justify-center items-center flex-col  gap-3 hover:-translate-y-2 hover:shadow-xl duration-500 ">
                                 <button className="w-[200px] h-[170px] bg-white  relative mx-auto">
-                                    <Image src={author.path} alt={author.label} layout="fill"  className="w-full h-full"/>
+                                    <Image src={process.env.NEXT_PUBLIC_S3_BUCKET_ENDPOINT+publisher.image} alt={publisher.publisherName} layout="fill"  className="w-full h-full"/>
                                 </button>
-                                <div className="flex flex-col items-center px-8">
-                                <p className="text-[14.5px] w-56 text-center capitalize font-semibold  whitespace-nowrap overflow-hidden overflow-ellipsis">{author.label}</p>
-                                <p className="text-[13px] capitalize text-gray-400">{author.author}</p>
-                                </div>
                             </div>
                         </SwiperSlide>
                         ))
@@ -74,4 +50,5 @@ const Publishers = ()=>{
         </div>
     )
 }
+
 export default Publishers

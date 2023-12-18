@@ -148,7 +148,7 @@ const weekDeals =[
 
 ]
 
-const Releases = ()=>{    
+const Releases = ({newReleases})=>{    
     const pushToProducts = ()=>{
         router.push("/shop/products")
     }
@@ -174,10 +174,13 @@ const Releases = ()=>{
             setTimeRemaining(calculateRemainingTime())
         },1000)
         return ()=> clearInterval(intervalId)
-    },[])
+    })
 
   return (
     <div className="container w-[88%] mx-auto shadow-lg">
+        {
+            // console.log(newReleases)
+        }
         <div className="shadow-lg new-release">
             <div className="border-b bg-white flex justify-between px-3 py-2 items-center">
                 <p className="capitalize text-[#282c96] font-semibold">new Releases</p>
@@ -196,7 +199,6 @@ const Releases = ()=>{
                     prevEl: '.swiper-button-prev',
                     nextEl: '.swiper-button-next',
                 }}
-                pagination={true}
                 mousewheel={true}
                 keyboard={true}
                 modules={[Navigation, Pagination, Mousewheel, Keyboard, Autoplay]}
@@ -283,7 +285,6 @@ const Releases = ()=>{
                             prevEl: '.swiper-button-prev',
                             nextEl: '.swiper-button-next',
                         }}
-                        pagination={true}
                         mousewheel={true}
                         keyboard={true}
                         modules={[Navigation, Pagination, Mousewheel, Keyboard, Autoplay]}

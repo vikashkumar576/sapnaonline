@@ -9,17 +9,17 @@ import Authors from "./authors";
 import Publishers from "./publishers";
 import ScrollToTopButton from "../shared/scroll";
 
- const Home = ()=>{
+ const Home = ({authors, publishers, newReleases})=>{
    return (
         <Layout title="Buy Books Online,Bookstore In Convinient price" description="welcome to sapnaonline store" keywords="sapnaonline, onlinebook store, newonline book store, sapnabooks, books estore">
             <Hero/>
-            <Releases />
+            <Releases newReleases={newReleases} />
             <Advertise />
             <Exam />
             <School />
             <Sellers />
-            <Authors />
-            <Publishers />
+            <Authors allAuthors={authors} />
+            <Publishers allPublishers={publishers}/>
             <ScrollToTopButton />
         </Layout>
    )

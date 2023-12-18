@@ -81,7 +81,7 @@ const Checkout = ()=>{
             <nav className='middle-nav pb-2 pt-2 border-b-[3px] border-gray-300 bg-white shadow-md'>
                 <div className="container w-[88%] mx-auto py-2 flex justify-between">
                     <button onClick={backToHome}>
-                        <Image src={'/sapnaHome/logo-black.png'} width={130} height={90}></Image>
+                        <Image alt="logo" src={'/sapnaHome/logo-black.png'} width={130} height={90}></Image>
                     </button>
                     <div className="flex gap-6">
                         <div className="flex w-32 items-center gap-2">

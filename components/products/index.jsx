@@ -4,85 +4,15 @@ import { Collapse, Rate, Select } from "antd"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import Link from "next/link"
-
-const allProducts = [
-    {
-        path: '/sapnaHome/newRelease1.jpg',
-        label: 'Murder On The Orient Express',
-        author: 'by Agatha Christie, Harper Collins : Uk',
-        price: '238',
-        discount: '17',
-    },
-    {
-        path: '/sapnaHome/newRelease2.jpg',
-        label: 'Murder On The Orient Express.',
-        author: 'by Agatha Christie, Harper Collins : Uk',
-        price: '238',
-        discount: '17',
-    },
-    {
-        path: '/sapnaHome/newRelease3.jpg',
-        label: 'Murder On The Orient Express.',
-        author: 'by Agatha Christie, Harper Collins : Uk',
-        price: '238',
-        discount: '7',
-    },
-    {
-        path: '/sapnaHome/newRelease4.jpg',
-        label: 'Murder On The Orient Express.',
-        author: 'by Agatha Christie, Harper Collins : Uk',
-        price: '238',
-        discount: '17',
-    },
-    {
-        path: '/sapnaHome/newRelease5.jpg',
-        label: 'Murder On The Orient Express.',
-        author: 'by Agatha Christie, Harper Collins : Uk',
-        price: '238',
-        discount: '17',
-    },
-    {
-        path: '/sapnaHome/newRelease6.jpg',
-        label: 'Murder On The Orient Express.',
-        author: 'by Agatha Christie, Harper Collins : Uk',
-        price: '238',
-        discount: '17',
-    },
-    {
-        path: '/sapnaHome/newRelease7.jpg',
-        label: 'Murder On The Orient Express.',
-        author: 'by Agatha Christie, Harper Collins : Uk',
-        price: '238',
-        discount: '17',
-    },
-    {
-        path: '/sapnaHome/newRelease8.jpg',
-        label: 'Murder On The Orient Express.',
-        author: 'by Agatha Christie, Harper Collins : Uk',
-        price: '238',
-        discount: '17',
-    },
-    {
-        path: '/sapnaHome/newRelease9.jpg',
-        label: 'Murder On The Orient Express.',
-        author: 'by Agatha Christie, Harper Collins : Uk',
-        price: '238',
-        discount: '17',
-    },
-    {
-        path: '/sapnaHome/newRelease1.jpg',
-        label: 'Murder On The Orient Express.',
-        author: 'by Agatha Christie, Harper Collins : Uk',
-        price: '238',
-        discount: '17',
-    },
-]
+import { useSelector } from "react-redux"
 
 const Products = ()=>{
+
+    const allProducts = useSelector((state)=> state.booksSlice.books)
     const router = useRouter()
 
-    const onProductClick = (label)=>{
-        router.push(`/shop/products/${label.toLowerCase().split(" ").join("-")}`)
+    const onProductClick = (id, label)=>{
+        router.push(`/shop/products/${label.toLowerCase().split(" ").join("-")}~${id}`)
     }
 
   return (
@@ -267,22 +197,22 @@ const Products = ()=>{
                     {
                         allProducts.map((product, productIndex)=>(
                             <div key={productIndex} className="card flex flex-col gap-4 justify-center items-start p-5 col-span-1 bg-white relative">
-                                <button className="mx-auto w-[120px] h-[195px] relative" onClick={()=>onProductClick(product.label)}>
-                                    <Image alt="book-image" src={product.path} layout="fill" />
+                                <button className="mx-auto w-[120px] h-[195px] relative" onClick={()=>onProductClick(product._id, product.book.title)}>
+                                    <Image alt="book-image" src={process.env.NEXT_PUBLIC_S3_BUCKET_ENDPOINT+product.book.image} layout="fill" />
                                 </button>
                                 <div className="flex gap-1 flex-col">
-                                    <Link  href={`/shop/products/${product.label.toLowerCase().split(" ").join("-")}`} legacyBehavior >
-                                        <a className="font-semibold text-sm">{product.label}</a>
+                                    <Link  href={`/shop/products/${product.book.title.toLowerCase().split(" ").join("-")}~${product._id}`} legacyBehavior >
+                                        <a className="font-semibold text-sm">{product.book.title}</a>
                                     </Link>
-                                    <p className="text-xs text-gray-400">{product.author}</p>
+                                    <p className="text-xs text-gray-400 font-semibold">By: <span className="text-indigo-500 capitalize">{product.book.author.authorName}, <span className="text-gray-500">{product.book.publisher.publisherName}</span></span></p>
                                     <div className="flex gap-3 items-center">
                                         <Rate disabled defaultValue={4} character={(<i className='bx bxs-star'></i>)} style={{fontSize: '20px', letterSpacing: '-7px'}} />
                                         <p className="text-[10px] text-gray-400">(234)</p>
                                     </div>
                                 </div>
                                 <div className="flex gap-2 items-center">
-                                    <p className="text-xl font-semibold text-[#2e3292]">&#8377;{ Math.floor(product.price - ((product.price * product.discount) / 100))}</p>
-                                    <p className="line-through text-gray-400">&#8377;{product.price}</p>
+                                    <p className="text-xl font-semibold text-[#2e3292]">&#8377;{ Math.floor(product.sellPrice - ((product.sellPrice * product.discount) / 100))}</p>
+                                    <p className="line-through text-gray-400">&#8377;{product.sellPrice}</p>
                                     <p className="text-green-600">&#40;{product.discount}% off&#41;</p>
                                 </div>
                                 <button className="flex text-white w-full mt-3">

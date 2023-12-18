@@ -410,7 +410,7 @@ const Layout = ({children, title='', description='', keywords='', isIncart}) => 
         <div className="container w-[88%] mx-auto py-2 flex justify-between">
           <div className="flex gap-32">
             <button onClick={backToHome}>
-              <Image src={'/sapnaHome/logo-black.png'} width={130} height={90}></Image>
+              <Image alt='logo' src={'/sapnaHome/logo-black.png'} width={130} height={90}></Image>
             </button>
             <div className="relative md:flex hidden items-center ">
                 <input type="search" className='border border-blue-700 w-[600px] py-2 rounded-l bg-gray-100 focus:placeholder:text-black outline-none px-3 text-sm' placeholder='Search books by title, author, ISBN' />

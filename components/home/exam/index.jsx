@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { Navigation, Pagination, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
+import { Navigation, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
 
 const allExams = [
     {
@@ -114,7 +114,7 @@ const Exam = ()=>{
                     <button className="col-span-2 bg-white px-5 py-8 border flex flex-col items-center gap-3 justify-center">
                         <Image alt="/" src={'/sapnaHome/author-1.png'} width={100} height={100}/>
                         <p className="font-semibold">Jeff Kinney</p>
-                        <p className="text-[13px] text-center">Jeffrey Patrick Kinney is an American author and cartoonist. He is best known for creating, writing and illustrating the children's book series Diary of a Wimpy Kid.</p>
+                        <p className="text-[13px] text-center">Jeffrey Patrick Kinney is an American author and cartoonist. He is best known for creating, writing and illustrating the children&apos;s book series Diary of a Wimpy Kid.</p>
                     </button>
                     <div className="col-span-6">
                         <div className="relative bg-white">
@@ -125,10 +125,9 @@ const Exam = ()=>{
                                 className="mySwiper flex justify-center items-center"
                                 cssMode={true}
                                 navigation={false}
-                                pagination={true}
                                 mousewheel={true}
                                 keyboard={true}
-                                modules={[Navigation, Pagination, Mousewheel, Keyboard, Autoplay]}
+                                modules={[Navigation, Mousewheel, Keyboard, Autoplay]}
                                 loop={true}
                             >
                                 {

@@ -2,7 +2,7 @@ import Image from "next/image"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { Navigation, Pagination, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
+import { Navigation, Mousewheel, Keyboard, Autoplay } from 'swiper/modules';
 import Test from "../test";
 
 const offerBanners = [
@@ -49,10 +49,9 @@ const Hero = ()=>{
                         prevEl: '.swiper-button-prev',
                         nextEl: '.swiper-button-next',
                     }}
-                    pagination={true}
                     mousewheel={true}
                     keyboard={true}
-                    modules={[Navigation, Pagination, Mousewheel, Keyboard, Autoplay]}
+                    modules={[Navigation, Mousewheel, Keyboard, Autoplay]}
                     slidesPerView={1}
                     spaceBetween={30}
                     loop={true}

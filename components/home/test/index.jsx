@@ -27,7 +27,7 @@ const Test = () => {
 
     // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, []);
+  });
 
   return (
     <div className="countdown-wrapper">
